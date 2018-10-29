@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/busja19/ZenScent/issues"
   },
-  "homepage": "https://github.com/busja19/ZenScent#readme"
+  "homepage": "https://github.com/busja19/ZenScent#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
