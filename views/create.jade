@@ -1,0 +1,22 @@
+extends layout
+block content
+    .row
+      h1 Please add new category
+      .formHold
+        h1.itemtitle New Category Form
+        form(method="post")
+       
+          fieldset
+            label(for="category_name") Product Category Name:
+            input(name="category_name", type="text", placeholder="Category Name")
+      
+            label(for="category_descr") Long Description:
+            input(name="category_descr", type="text", placeholder="Description")
+      
+            label(for="category_image") Category Image:
+            input(name="category_image", type="text", placeholder="Image")
+
+            label(for="date") Date:
+            input(name="date", type="var timeInMss = Date.now()", placeholder="Date")
+            
+            button.btn1(type="submit") Create Category
