@@ -8,7 +8,7 @@ html(lang='en')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js')
     link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.4.2/css/all.css', integrity='sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns', crossorigin='anonymous')
-    link(rel='stylesheet', href='../style.css', type='text/css')
+    link(rel='stylesheet', href='../app.css', type='text/css')
     link(href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', rel='stylesheet')
     title ZenScent
   body
@@ -43,8 +43,11 @@ html(lang='en')
                 i.fas.fa-truck.fa-sm
                 |  Free Shipping
     nav.navbar.navbar-expand-md.navbar-light.bg-light
+
       .navbar-collapse.collapse.w-100.order-1.order-md-0.dual-collapse2
         ul.navbar-nav.mr-auto
+          li.nav-item
+            a.nav-link(href='/') Home
           li.nav-item.active
           li.nav-item.dropdown
             a#navbardrop.nav-link.dropdown-toggle(href='#', data-toggle='dropdown') Categories
@@ -88,16 +91,16 @@ html(lang='en')
             
             
             
-     block content
+    block content
             
-    nav.navbar.fixed-bottom.navbar-light.bg-light
-      section.newsletter
-        .container
-          .row
-            .thumbnail.center.well.well-small.text-center2
-              .single
-                h3 Sign up to our Newsletter
-                p
+   nav.navbar.bottom.navbar-light.bg-light
+     section.newsletter
+       .container
+         .row
+          .thumbnail.center.well.well-small.text-center2
+             .single
+               h3 Sign up to our Newsletter
+               p
                   | To receive special updates and offers!
                   | You can unsubscribe at any time.
                 section

@@ -1,0 +1,18 @@
+extends layout
+block content
+    .container
+     .row
+      .col-md-6.col-md-offset-3
+           each row in res1
+              .item 
+                h1.legend.text-center Categories
+                br
+                h3 Id: #{row.Id}
+                h3  #{row.category_name} 
+                p  #{row.category_descr}
+                img(src='#{row.category_image}', alt='#{row.category_image}')
+
+                br
+
+                a.button.btn.btn-secondary(href="/editcategory/#{row.Id}") Edit Category
+

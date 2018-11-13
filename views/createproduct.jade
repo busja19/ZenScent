@@ -1,0 +1,32 @@
+extends layout
+block content
+    .row
+      h1 Please add new Product
+      .formHold
+        h1.itemtitle New Product Form
+        form(method="post")
+       
+          fieldset
+          
+            label(for="product_name") Product Name:
+            input(name="product_name", type="text", placeholder="Product Name")
+
+            label(for="Id") CAtegory Id:
+            input(name="Id", type="text", placeholder="Category Id")
+
+            label(for="category_name") Product Category Name:
+            input(name="category_name", type="text", placeholder="Category Name")
+      
+            label(for="Price") Price:
+            input(name="Price", type="float", placeholder="Price")
+            
+            label(for="Qty") Qty:
+            input(name="Qty", type="int", placeholder="Qty")
+            
+            label(for="product_descr") Description:
+            input(name="producty_descr", type="text", placeholder="Description")
+            
+            label(for="product_image") Product Image:
+            input(name="product_image", type="text", placeholder="Image")
+
+            a.button.btn.btn-secondary(type="submit") Create Product
