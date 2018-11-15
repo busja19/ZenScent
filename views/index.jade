@@ -23,14 +23,15 @@ block content
                | some text
                br
 
-         .prod-container
-           each row in res1
+         .category-container
+            each row in res1
               .item 
                 h1.category #{row.category_name}
                 p.itemp #{row.category_descr}
                 img.pimage(src="#{row.category_image}", alt="#{row.category_image}")
                 br
                 br
+
 
                a.button.btn.btn-light(href="/category/#{row.Id}") Show Category #{row.category_name}
                a.button.btn.btn-light(href="/editcategory/#{row.Id}") Edit Category
@@ -40,21 +41,5 @@ block content
                
     section#products 
      a.button.btn.btn-secondary(href="/createproduct") Create New Product
-     .content-section-a
 
-         .prod-container
-           each row in res1
-              .item 
-                h1.category #{row.product_name}
-                h3.itemp #{row.Price}
-                h3.itemp #{row.Qty}
-                p.itemp #{row.product_descr}
-                img.pimage(src="#{row.product_image}", alt="#{row.product_image}")
-                br
-                br
-
-               a.button.btn.btn-light(href="/product/#{row.Id}") Show Category #{row.product_name}
-               a.button.btn.btn-light(href="/editproduct/#{row.Id}") Edit Product
-               a.button.btn.btn-light(href="/deleteproduct/#{row.Id}") Delete Product
-  
   

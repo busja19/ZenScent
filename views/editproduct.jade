@@ -1,0 +1,41 @@
+extends layout
+block content
+   .container
+    .row
+        .col-md-6.col-md-offset-3
+           each row in res1
+            form.form-horizontal(action='', method='post')
+             fieldset
+               legend.text-center Edit Product
+               .form-group
+                 label.col-md-3.control-label(for="newproductname") Product Name:
+                 .col-md-9
+                   input#name.form-control(name="newproductname", type="text", value="#{row.productname}")
+              
+               .form-group
+                  label.col-md-3.control-label(for="newId") Category Id:
+                  .col-md-9
+                   input#name.form-control(name="newId", type="int", value="#{row.Id}")
+
+               .form-group
+                 label.col-md-3.control-label(for="newprice") Product Price:
+                 .col-md-9
+                   input#name.form-control(name="newprice", type="float", value="#{row.price}")               
+
+               .form-group
+                  label.col-md-3.control-label(for="newQty") Qty:
+                  .col-md-9
+                    input#name.form-control(name="newQty", type="int", value="#{row.Qty}")                  
+                
+               .form-group
+                  label.col-md-3.control-label(for="newproductdescr") Description:
+                  .col-md-9
+                   textarea#exampleTextarea.form-control(name="newproductdescr", rows='3', value="#{row.productdesc}")
+                
+               .form-group
+                  label.col-md-3.control-label(for="newproductimage") Image:
+                  .col-md-9
+                   input#image.form-control(name="newproductimage", type="text", value="#{row.productimage}")
+               
+                button.btn.btn-secondary(type="edit") Edit Product  
+

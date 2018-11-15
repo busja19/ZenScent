@@ -1,0 +1,24 @@
+extends layout
+block content
+ .header
+  
+
+   section#products 
+    a.button.btn.btn-secondary(href="/createproduct") Create New Product
+    .content-section-a
+
+         .prod-container
+           each row in res1
+              .item 
+                h4.product1 Product Id: #{row.ProductId}         
+                h1.product #{row.productname}
+                p.itemp Category: #{row.Id}
+                p.price Price: &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+                img.pimage(src="#{row.productimage}", alt="#{row.productimage}")
+
+               a.button.btn.btn-light(href="/product/#{row.Id}") Show #{row.product_name}
+               a.button.btn.btn-light(href="/editproduct/#{row.Id}") Edit Product
+               a.button.btn.btn-light(href="/deleteproduct/#{row.Id}") Delete Product
+                
+               

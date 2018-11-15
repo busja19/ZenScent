@@ -33,7 +33,7 @@ db.connect((err) =>{
  if(err){
   console.log("Connection to DB Refused!");
  }else{
-  console.log("You are conencted to DB!");
+  console.log("You are connected to DB!");
  }
 });
 
@@ -42,79 +42,30 @@ db.connect((err) =>{
 //CATEGORY TABLE
 //CATEGORY TABLE
 
-// DB Product Category Table
-app.get('/categorytable', function(req,res){
- let sql = 'CREATE TABLE category (Id int NOT NULL AUTO_INCREMENT PRIMARY KEY, category_name varchar(255), category_descr varchar(255), category_image varchar(255), creation_date date)'
- let query = db.query(sql,(err,res)=>{
-  if (err) throw err;
-  console.log(res);
- });
-  res.send("Category Table!")
-});
-// End DB Product Category Table
-
-// DB Product Category Table
-app.get('/categoryalter', function(req,res){
- let sql = 'ALTER TABLE category MODIFY COLUMN category_descr TEXT'
- let query = db.query(sql,(err,res)=>{
-  if (err) throw err;
-  console.log(res);
- });
-  res.send("modifiied Table!")
-});
-// End DB Product Category Table
-
-
-// SQL Insert Data to Category Table
-app.get('/insertcategory3', function(req,res){
- let sql = 'INSERT INTO category (category_name, category_descr, category_image, creation_date) VALUES ("Diffusers", "A diffuser is one of the easiest and most efficient ways of sending your enlightening, enriching, invigorating, and soothing aromas out into the air around you. ", "carrier.jpg", "2018-11-04" );'
-  
- let query = db.query(sql,(err,res)=>{
-  if (err) throw err;
-  console.log(res);
- });
-  res.send("Categories Created")
-});
-// End SQL Insert Data to Category Table
-
-
- // function to delete database
-app.get('/deletecategory/:id', function(req, res){
- let sql = 'DELETE FROM category WHERE Id = "'+req.params.id+'";'
- let query = db.query(sql, (err, res1) =>{
-  if(err)
-  throw(err);
-  res.redirect('/'); 
- });
-});
 
 
  // function to render the create page
 app.get('/create', function(req, res){
  
   res.render('create', {root: VIEWS});
-  console.log("Now you are ready to create!");
+  console.log("create new category!");
 });
 
- // function to add data to database based on button press
 app.post('/create', function(req, res){
   var name = req.body.name
-  let sql = 'INSERT INTO category (category_name, category_descr, category_image, creation_date) VALUES ("'+name+'", "'+req.body.category_descr+'", "'+req.body.category_image+'", "'+req.body.creation_dat+'");'
-  let query = db.query(sql,(err,res1)=>{
+  let sql = 'INSERT INTO category (category_name, category_descr, category_image) VALUES ("'+req.body.category_name+'", "'+req.body.category_descr+'", "'+req.body.category_image+'");'
+  let query = db.query(sql, (err, res1)=>{
   if (err) throw err;
   console.log(res1);
-  console.log("the Name of the category is " + name)
+  console.log("the Name of the product is " + name)
  });
   
-res.render('index', {root: VIEWS});
+res.render('created', {root: VIEWS});
 });
 
 
 
-
-
-
-// function to EDIT database date based on button press and form
+// function to EDIT catecory table 
 
 app.get('/editcategory/:id', function(req, res){
  let sql = 'SELECT * FROM category WHERE Id = "'+req.params.id+'";'
@@ -150,7 +101,15 @@ app.get('/category/:id', function(req, res){
   console.log("category page!");
 });
 
-
+ // function to delete database
+app.get('/deletecategory/:id', function(req, res){
+ let sql = 'DELETE FROM category WHERE Id = "'+req.params.id+'";'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+  res.redirect('/'); 
+ });
+});
 
 
 
@@ -160,7 +119,7 @@ app.get('/category/:id', function(req, res){
 
 // DB Product  Table
 app.get('/producttable', function(req,res){
- let sql = 'CREATE TABLE product (ProductId int NOT NULL AUTO_INCREMENT PRIMARY KEY, product_name varchar(255), Id int, Price float, Qty int, product_descr text, product_image varchar(255), FOREIGN KEY (Id) REFERENCES category(Id));'
+ let sql = 'CREATE TABLE product (ProductId int NOT NULL AUTO_INCREMENT PRIMARY KEY, productame varchar(255), price float, Qty int, productdescr text, productimage varchar(255), Id int, FOREIGN KEY (Id) REFERENCES category(Id));'
  let query = db.query(sql,(err,res)=>{
   if (err) throw err;
   console.log(res);
@@ -169,22 +128,13 @@ app.get('/producttable', function(req,res){
 });
 // End DB Product Table
 
-// DB Product Category Table
-app.get('/productalter', function(req,res){
- let sql = 'ALTER TABLE product ADD COLUMN category_descr TEXT'
- let query = db.query(sql,(err,res)=>{
-  if (err) throw err;
-  console.log(res);
- });
-  res.send("modifiied Table!")
-});
-// End DB Product Category Table
+
 
 
 
 // SQL Insert Data to Product Table
 app.get('/insert', function(req,res){
- let sql = 'INSERT INTO product (product_name, Price, Qty, product_descr, product_image, Id) VALUES ("300ml Light Wood Grain Diffuser", "23.99", 1, "descr", "diffuser.jpg", 18);'
+ let sql = 'INSERT INTO product (productname, price, Qty, productdescr, productimage, Id) VALUES ("Ultrasonic Mist Diffuserr, Dark Brown", 23.99, 1, "Use this Ultrasonic Mist Diffuser with BCL Essential Oils for an aromatherapy that fits every moment.", "diffuser3.png", 18);';
   
  let query = db.query(sql,(err,res)=>{
   if (err) throw err;
@@ -200,20 +150,20 @@ app.get('/insert', function(req,res){
 app.get('/createproduct', function(req, res){
  
   res.render('createproduct', {root: VIEWS});
-  console.log("Now you are ready to create new product!");
+  console.log("create new product!");
 });
 
- // function to add data to database based on button press
 app.post('/createproduct', function(req, res){
   var name = req.body.name
-  let sql = 'INSERT INTO product (product_name, Price, Qty, product_descr, product_image, Id, category_name) VALUES ("'+req.body.name+'", "'+req.body.price+'","'+req.body.qty+'", "'+req.body.descr+'", "'+req.body.image+'", "'+req.body.Id+'", "'+req.body.caategory_name+'");'
-  let query = db.query(sql,(err,res1)=>{
+  let sql = 'INSERT INTO product (productname, price, Qty, productdescr, productimage, Id) VALUES ("'+req.body.productname+'", "'+req.body.price+'", "'+req.body.Qty+'", "'+req.body.productdescr+'", "'+req.body.productimage+'", "'+req.body.Id+'");';
+ 
+  let query = db.query(sql, (err, res1)=>{
   if (err) throw err;
-  console.log(res);
-  console.log("New Product is" + name)
+  console.log(res1);
+  console.log("New Product" + name)
  });
   
-res.render('created', {root: VIEWS});
+res.render('product', {root: VIEWS});
 });
 
 
@@ -221,6 +171,7 @@ res.render('created', {root: VIEWS});
 
 app.get('/editproduct/:id', function(req, res){
  let sql = 'SELECT * FROM product WHERE Id = "'+req.params.id+'";'
+ 
  let query = db.query(sql, (err, res1) =>{
   if(err)
   throw(err);
@@ -232,14 +183,16 @@ app.get('/editproduct/:id', function(req, res){
 
 
 app.post('/editproduct/:id', function(req, res){
-let sql = 'UPDATE product SET product_name = "'+req.body.newname+'", Price = "'+req.body.newprice+'", Qty = "'+req.body.newqty+'", product_descr = "'+req.body.newdescr+'", product_image = "'+req.body.newimage+'" WHERE Id = "'+req.params.id+'" Id = "'+req.body.newid+'",;'
-let query = db.query(sql, (err, res1) =>{
+let sql = 'UPDATE product SET productname = "'+req.body.newproductname+'", Price = "'+req.body.newprice+'", Qty = "'+req.body.newQty+'", productdescr = "'+req.body.newproductdescr+'", productimage = "'+req.body.newproductimage+'", Id = "'+req.body.newid+'" WHERE Id = "'+req.params.id+'"'
+let query = db.query(sql, (err, res) =>{
  if(err) throw err;
  console.log(res);
 })
-res.render('created', {root: VIEWS});
+res.redirect("/product/" + req.params.id);
 });
 // end of EDIT category table
+
+
 
 
 
@@ -248,10 +201,25 @@ app.get('/product/:id', function(req, res){
  let query = db.query(sql, (err, res1) =>{
   if(err)
   throw(err);
-  res.render('product', {root: VIEWS, res1}); 
+  res.render('products', {root: VIEWS, res1}); 
  });
   console.log("product page!");
 });
+
+
+
+
+
+ // function to delete database
+app.get('/deleteproduct/:id', function(req, res){
+ let sql = 'DELETE FROM product WHERE Id = "'+req.params.id+'";'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+  res.redirect('/products'); 
+ });
+});
+
 
 
 
@@ -282,17 +250,56 @@ app.get('/', function(req, res){
  console.log("home page!");
 });
 
-
-
-
+// function to render the home
+app.get('/categories', function(req, res){
+ let sql = 'SELECT * FROM category;'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+ 
+  res.render('categories', {root: VIEWS, res1}); // use the render command so that the response object renders a HTML page
+ });
+ console.log("categories page!");
+});
 
 
 // function to render the products page
+app.get('/products', function(req, res){
+ let sql = 'SELECT * FROM product;'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+ 
+  res.render('products', {root: VIEWS, res1}); // use the render command so that the response object renders a HTML page
+ });
+ console.log("products!");
+});
+
+//this is my search button functionality
+app.post('/search', function(req, res){
+ let sql = 'SELECT * FROM product WHERE productname LIKE "%'+req.body.search+'%";'
+ let query = db.query(sql, (err,res1) =>{
+  if(err)
+  throw(err);
+
+
+  res.render('products', {root: VIEWS, res1});
+ });
+});
+
+
+// function to render blog
 app.get('/blog', function(req, res){
   res.render('blog', {root: VIEWS});
   console.log("blog!");
 });
 
+
+// function to render the login
+app.get('/login', function(req, res){
+  res.render('login', {root: VIEWS});
+  console.log("login!");
+});
 
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", 
 function(){

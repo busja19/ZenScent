@@ -1,44 +1,21 @@
-extends layout
+ extends layout
 block content
- .header
-  
-  .container
-    
-       center
-         h2 Products
-  .header
-   section#home
-   .content-section-b
-       .container
-         h3(style='text-align:center')
-           | some text here
-         hr
-         .row
-           .col-sm-12
-             p.lead
-               | some text
-               br
-               br
-               |  text text
-               br
-
-   section#products 
-    a.btn1(href="/createproduct") Create New Product
-    .content-section-a
-
-         .prod-container
-           each row in res1
+    .container
+     .row
+      .col-md-6.col-md-offset-3
+           each row in res
               .item 
-                h4.product #{row.Id}
-                h1.product #{row.product_name}
-                p.itemp Category: #{row.category_name}
-                p.price &euro;#{row.Price}
-                p.itemp Description: #{row.product_descr}
-                img.img-thumbnail(src="#{row.product_image", alt="#{row.product_image}")
-                
-                a.btn1(href="/product/#{row.Id}") Show #{row.product_name}
+                h1.legend.text-center Categories
+                br
 
+                h2.product #{row.productname}
+                h4.product1 Product Id: #{row.ProductId}   
+                p.price &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+                img.pimage(src='../../#{row.productimage}", alt="#{row.productimage}')                 
+                  
+               a.button.btn.btn-light(href="/product/#{row.Id}") Show #{row.product_name}
+               a.button.btn.btn-light(href="/editproduct/#{row.Id}") Edit Product
+               a.button.btn.btn-light(href="/deleteproduct/#{row.Id}") Delete Product
                 
-               
-               
-              
+ 
