@@ -5,6 +5,8 @@ const VIEWS = path.join(__dirname, 'views');
 
 app.set('view engine', 'jade');
 
+var session = require('express-session');
+
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -19,7 +21,8 @@ app.use('/stylesheets/fontawesome', express.static(__dirname + '/node_modules/@f
 
 //var reviews = require("./models/reviews.json");
 
-
+//app.use(session({ secret: "topsecret" })); // required to make the session accessable throughouty the application
+app.use(require('express-session')({ secret: 'mysecret', resave: true, saveUninitialized: true }));
 
 // create connection to Database
 const db = mysql.createConnection({
@@ -248,6 +251,7 @@ app.get('/', function(req, res){
   res.render('index', {root: VIEWS, res1}); // use the render command so that the response object renders a HTML page
  });
  console.log("home page!");
+  console.log("the statusof this user is" + req.session.user);
 });
 
 // function to render the home
@@ -300,6 +304,80 @@ app.get('/login', function(req, res){
   res.render('login', {root: VIEWS});
   console.log("login!");
 });
+
+// function to render the Register
+app.get('/register', function(req, res){
+  res.render('register', {root: VIEWS});
+  console.log("register!");
+});
+
+
+// this is my User Table
+app.get('/createusertable', function(req,res){
+ let sql = 'CREATE TABLE users (Id int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(255), email varchar(255), password varchar(255));'
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+});
+//users log in table - END
+
+
+//Render register in function
+
+app.get('/register', function(req, res){
+  res.render('register', {root:VIEWS});
+});
+
+app.post('/register', function(req, res){
+db.query('INSERT INTO users (userame, email, password) VALUES ("'+req.body.username+'", "'+req.body.email+'", "'+req.body.password+'")'
+        );
+  req.session.email = "you are logged in";
+  req.session.who = req.body.name;
+  res.redirect('/')
+});
+
+app.get('/login', function(req, res){
+  res.render('login', {root: VIEWS});
+});
+
+
+
+ app.post('/login', function(req, res) {
+  var whichOne = req.body.name;
+  var whichPass = req.body.password;
+  
+   let sql2 = 'SELECT name, password FROM users WHERE name= "'+whichOne+'"'
+   let query = db.query(sql2, (err, res2) => {
+    if(err) throw err;
+    console.log(res2);
+    
+    var passx= res2[0].password
+    var passxn= res2[0].name
+    console.log("You logged in with " + passx + " and name " + passxn );
+    req.session.email = "LoggedIn";
+  
+    if(passx == whichPass){
+    console.log("It Worked! Logged in with: " + passx + " , " + whichPass);
+    
+   res.redirect("/");
+  }
+  else{res.redirect("login");}
+   //res.render("index.jade");
+    //res.render("showit.jade", {res1,res2});
+  });
+ 
+  });
+
+//LOG OUT ROUTE
+app.get('/logout', function(req, res){
+ res.render('logout', {root:VIEWS});
+ req.session.destroy(session.email);
+})
+
+//END LOG OUT ROUTE
+
+
 
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", 
 function(){

@@ -1,0 +1,66 @@
+extends layout
+block content
+  .limiter
+   .container-login100(style="background-image: url('zen.jpg');") 
+    .main
+      section.signup
+        // <img src="images/signup-bg.jpg" alt="">
+        .container
+          .signup-content
+           form.login100-form.validate-form
+            span.login100-form-title.p-b-49 
+              |Create account
+             .wrap-input100.validate-input.m-b-23(data-validate='Username is required')
+               span.label-input100 
+               input.input100(type='text', name='username', placeholder='Type your username')
+               span.focus-input100
+
+             .wrap-input100.validate-input.m-b-23(data-validate='Email is required')
+               span.label-input100 
+               input.input100(type='text', name='email', placeholder='Your Email')
+               span.focus-input100
+               
+             .wrap-input100.validate-input(data-validate='Password is required')
+               span.label-input100 
+               input.input100(type='password', name='password', placeholder='Type your password')
+               span.focus-input100
+
+             .wrap-input100.validate-input(data-validate='Password is required')
+               span.label-input100 
+               input.input100(type='password', name='repassword', placeholder='Repeat your password')
+               span.focus-input100 
+
+             .form-check
+              input#exampleCheck1.form-check-input(type='checkbox', name='agree-term')
+             label.form-check-label(for='agree-term') 
+
+
+              .form-group
+                input#agree-term.agree-term(type='checkbox', name='agree-term')
+                label.label-agree-term(for='agree-term')
+                  span
+                    span
+                  | I agree all statements in  
+                  a.term-service(href='#') Terms of service
+              .form-group
+                input#submit.form-submit(type='submit', name='submit', value='Sign up')
+            p.loginhere
+              | Have already an account ? 
+              a.loginhere-link(href='/login') Login here
+    // JS
+    script(src='vendor/jquery/jquery.min.js')
+    script(src='js/main.js')
+    
+         
+         
+         
+         
+         
+             .txt1.text-center.p-t-54.p-b-20         
+           span
+             | .
+        .container-login100-form-btn
+          .wrap-login100-form-btn
+            .login100-form-bgbtn
+            button.login100-form-btn
+              a(href='/register')  Register
