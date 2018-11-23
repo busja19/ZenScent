@@ -1,0 +1,105 @@
+extends layout
+block content
+  .limiter
+   .container-login100(style="background-image: url('zen.jpg');") 
+    .main
+      section.signup
+        // <img src="images/signup-bg.jpg" alt="">
+        .container
+         .signup-content
+           form(action='/signup', method='post')
+            span.login100-form-title.p-b-49 
+              |Create account
+             .wrap-input100.validate-input.m-b-23(data-validate='Username is required')
+               span.label-input100 
+               input.input100(type='text', name='username', placeholder='Type your username')
+               span.focus-input100
+
+               
+             .wrap-input100.validate-input(data-validate='Password is required')
+               span.label-input100 
+               input.input100(type='password', name='password', placeholder='Type your password')
+               span.focus-input100
+
+              .form-check
+              input#exampleCheck1.form-check-input(type='checkbox', name='agree-term')
+             label.form-check-label(for='agree-term') 
+              |.
+              if (message.length > 0)
+                #alert
+                  .alert.alert-success= message        
+
+              .form-group
+                input#agree-term.agree-term(type='checkbox', name='agree-term')
+                label.label-agree-term(for='agree-term')
+                  span
+                    span
+                  | I agree all statements in  
+                  a.term-service(href='#') Terms of service
+              .form-group
+                    input#submit.form-submit(type='submit', name='submit', value='Sign up')
+            p.loginhere
+              | Have already an account ? 
+              a.loginhere-link(href='/login') Login here
+              a.button.btn.btn-light(href='#', onclick='signOut();') Sign out
+    // JS
+    script(src='vendor/jquery/jquery.min.js')
+    script(src='js/main.js')
+    script.
+     window.fbAsyncInit = function() {
+     FB.init({
+     appId      : '{your-app-id}',
+     cookie     : true,
+     xfbml      : true,
+     version    : '{api-version}'
+     });
+     FB.AppEvents.logPageView();
+     };
+     (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));    
+     script(src='https://apis.google.com/js/platform.js', async='', defer='')
+     a(href='#', onclick='signOut();') Sign out
+     script.
+     function signOut() {
+     var auth2 = gapi.auth2.getAuthInstance();
+     auth2.signOut().then(function () {
+     console.log('User signed out.');
+     });
+     }
+  .row
+  .container
+    .item
+      h1
+        span.fa.fa-sign-in
+        |  Signup
+
+        if (message.length > 0)
+          #alert
+           p= message        
+          .signup-content
+      // LOGIN FORM
+      form(action='/signup', method='post')
+        .form-group
+          label Username
+          input.form-control(type='text', name='username')
+        .form-group
+          label Password
+          input.form-control(type='password', name='password')
+        button.button(type='submit') Signup
+      hr
+      p
+        | Already have an account? 
+        br
+        a.button(href='/login') Login
+      p
+        | Or go 
+        br
+        a.button(href='/') home
+        | .
+       
+         

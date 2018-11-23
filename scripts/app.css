@@ -918,11 +918,13 @@ input[type=checkbox]:not(old):checked + label > span:before {
 
 .loginhere {
   color: #555;
-  font-weight: 500;
+  font-weight: 900;
   text-align: center;
   margin-top: 91px;
   margin-bottom: 5px; }
 
+
+  
 .loginhere-link {
   font-weight: 700;
   color: #222; }

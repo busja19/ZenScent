@@ -26,15 +26,18 @@ html(lang='en')
               i.fa.fa-sm.fa-instagram.fa-sm
         ul.nav.navbar-nav
           nav.navbar.navbar-light.bg-light
-            a.navbar-brand(href='/account', "ins-ic='', mr-3"='')
+            a.navbar-brand(href='/profile', "ins-ic='', mr-3"='')
               i.fas.fa-user.fa-xs
               | MyAccount
-            a.navbar-brand(href='/register', "ins-ic='', mr-3"='')
+            a.navbar-brand(href='/signup', "ins-ic='', mr-3"='')
               i.fas.fa-sign-in-alt.fa-sm
               |  Sign Up
             a.navbar-brand(href='/login', "ins-ic='', mr-3"='')
               i.fas.fa-user.fa-sm
               |  Login
+            a.navbar-brand(href='/logout', "ins-ic='', mr-3"='')
+              i.fas.fa-user.fa-xs
+              | Logout
             a.navbar-brand(href='/cart', "ins-ic='', mr-3"='')
               i.fas.fa-shopping-cart.fa-sm
               |  Cart
@@ -58,7 +61,7 @@ html(lang='en')
               a.dropdown-item(href='#') Plant Oils
               a.dropdown-item(href='#') Difusers
           li.nav-item
-            a.nav-link(href='#') Blog
+            a.nav-link(href='blog') Blog
           li.nav-item
             a.nav-link(href='#') Contact Us
       .mx-auto.order-0

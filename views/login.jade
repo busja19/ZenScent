@@ -3,7 +3,7 @@ block content
   .limiter
    .container-login100(style="background-image: url('zen.jpg');")
      .wrap-login100.p-l-55.p-r-55.p-t-65.p-b-54
-       form.login100-form.validate-form
+       form(action='/login', method='post')
          span.login100-form-title.p-b-49
            | Login
          .wrap-input100.validate-input.m-b-23(data-validate='Username is required')
@@ -15,16 +15,23 @@ block content
            span.label-input100 Password
            input.input100(type='password', name='pass', placeholder='Type your password')
            span.focus-input100
+
+         if (message.length > 0)
+           #alert
+             .alert.alert-success= message   
+
          .text-right.p-t-8.p-b-31
            a(href='/retrieve')
              | Forgot password?
          .container-login100-form-btn
            .wrap-login100-form-btn
              .login100-form-bgbtn
-             a.button.login100-form-btn(href='/login')
-               | Login
+             button.login100-form-btn(type='submit') Login
 
-
+             button.btn.btn-warning.btn-lg(type='submit') Login
+         .form-group
+              input#submit.form-submit(type='submit', name='login', value='login')
+            
          .txt1.text-center.p-t-54.p-b-20         
            span
              | .
@@ -32,7 +39,7 @@ block content
           .wrap-login100-form-btn
             .login100-form-bgbtn
             button.login100-form-btn
-              a(href='/register')  Register
+              a(href='/signup')  Register
 
          
          .txt1.text-center.p-t-54.p-b-20         
@@ -40,16 +47,74 @@ block content
              | Or Sign Up Using
              
          .flex-c-m
-           a.login100-social-item.bg1(href='#')
+           a.login100-social-item.bg1(href='/auth/facebook')
              i.fa.fa-facebook
-           a.login100-social-item.bg2(href='#')
+           a.login100-social-item.bg2(href='/auth/twitter')
              i.fa.fa-twitter
-           a.login100-social-item.bg3(href='#')
+           a.login100-social-item.bg3(href='/auth/google')
              i.fa.fa-google
-         .flex-col-c.p-t-155
-           span.txt1.p-b-17
-             | Or Sign Up Using
-           a.txt2(href='#')
-             | Sign Up
+
   #dropDownSelect1
- 
+  
+  
+  
+   .container
+  .col-sm-6.col-sm-offset-3
+    h1
+      span.fa.fa-sign-in
+      |  Login
+      if (message.length > 0)
+        #alert
+          .alert.alert-success= message
+          .text-right.p-t-8.p-b-31
+    // LOGIN FORM
+    form(action='/login', method='post')
+      .form-group
+        label Username
+        input.form-control(type='text', name='username')
+      .form-group
+        label Password
+        input.form-control(type='password', name='password')
+      .form-group
+        label Remember Me
+        input.form-control(type='checkbox', name='remember', value='yes')
+      button.btn.btn-warning.btn-lg(type='submit') Login
+    hr
+    p
+      | Need an account? 
+      a(href='/signup') Signup
+    p
+      | Or go 
+      a(href='/') home
+      | .
+      
+      
+    // JS
+    script(src='vendor/jquery/jquery.min.js')
+    script(src='js/main.js')
+    script.
+     window.fbAsyncInit = function() {
+     FB.init({
+     appId      : '{your-app-id}',
+     cookie     : true,
+     xfbml      : true,
+     version    : '{api-version}'
+     });
+     FB.AppEvents.logPageView();
+     };
+     (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));    
+     script(src='https://apis.google.com/js/platform.js', async='', defer='')
+     a(href='#', onclick='signOut();') Sign out
+     script.
+     function signOut() {
+     var auth2 = gapi.auth2.getAuthInstance();
+     auth2.signOut().then(function () {
+     console.log('User signed out.');
+     });
+     }      
