@@ -1,0 +1,122 @@
+link(type='text/css', href='bootstrap/css/bootstrap.min.css', rel='stylesheet')
+link(type='text/css', href='bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet')
+link(rel='stylesheet', href='../admin.css', type='text/css')   
+link(type='text/css', href='images/icons/css/font-awesome.css', rel='stylesheet')
+link(type='text/css', href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600', rel='stylesheet')
+extends layout
+block content
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.navbar-inverse-collapse')
+            i.icon-reorder.shaded
+          a.brand(href='index.html') ZenScent 
+          .nav-collapse.collapse.navbar-inverse-collapse
+            ul.nav.nav-icons
+              li.active
+                a(href='#')
+                  i.icon-envelope
+              li
+                a(href='#')
+                  i.icon-eye-open
+              li
+                a(href='#')
+                  i.icon-bar-chart
+            form.navbar-search.pull-left.input-append(action='#')
+              input.span3(type='text')
+              button.btn(type='button')
+                i.icon-search
+            ul.nav.pull-right
+              li
+                a(href='#') Support 
+          // /.nav-collapse
+          // /navbar-inner
+          // /navbar
+          .wrapper
+            .container
+              .row
+                .span3
+                  .sidebar
+                    ul.widget.widget-menu.unstyled
+                      li.active
+                        a(href='index.html')
+                          i.menu-icon.icon-dashboard
+                          | Dashboard
+                      li
+                        a(href='products.jade')
+                          i.menu-icon.icon-table
+                          | Products
+                      li
+                        a(href='categories.jade')
+                          i.menu-icon.icon-table
+                          | Categories 
+                          b.label.green.pull-right
+                            | 3
+                      li
+                        a(href='reviews.jade')
+                          i.menu-icon.icon-tasks
+                          | Product Reviews 
+                          b.label.orange.pull-right
+                            | 3
+                    // /.widget-nav
+                    ul.widget.widget-menu.unstyled
+                      li
+                        a(href='ui-button-icon.html')
+                          i.menu-icon.icon-book
+                          |  Orders
+                      li
+                        a(href='ui-typography.html')
+                          i.menu-icon.icon-book
+                          | Payments
+                      li
+                        a(href='form.html')
+                          i.menu-icon.icon-inbox
+                          | Inbox
+                      li
+                        a(href='table.html')
+                          i.menu-icon.icon-table
+                          | Tables
+                    // /.widget-nav
+                    ul.widget.widget-menu.unstyled
+                      li
+                        a.collapsed(data-toggle='collapse', href='#togglePages')
+                          i.menu-icon.icon-cog
+                          i.icon-chevron-down.pull-right
+                          i.icon-chevron-up.pull-right
+                          | More Pages
+                        ul#togglePages.collapse.unstyled
+                          li
+                            a(href='other-login.html')
+                              i.icon-inbox
+                              | Login
+                          li
+                            a(href='other-user-profile.html')
+                              i.icon-inbox
+                              | Profile
+                          li
+                            a(href='other-user-listing.html')
+                              i.icon-inbox
+                              | All Users
+                      li
+                        a(href='#')
+                          i.menu-icon.icon-signout
+                          | Logout
+                  // /.sidebar
+                .span9
+                  .content
+                    .module.message
+                      .module-head
+                        h3
+                          | Admin Panel
+                      .module-foot
+                  // /.content
+                  // /.content
+                  // /.span9
+                  // /.container
+          script(src='scripts/jquery-1.9.1.min.js', type='text/javascript')
+          script(src='scripts/jquery-ui-1.10.1.custom.min.js', type='text/javascript')
+          script(src='bootstrap/js/bootstrap.min.js', type='text/javascript')
+          script(src='scripts/flot/jquery.flot.js', type='text/javascript')
+          script(src='scripts/flot/jquery.flot.resize.js', type='text/javascript')
+          script(src='scripts/datatables/jquery.dataTables.js', type='text/javascript')
+          script(src='scripts/common.js', type='text/javascript')

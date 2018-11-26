@@ -1,21 +1,23 @@
- extends layout
+extends layout
 block content
     .container
      .row
       .col-md-6.col-md-offset-3
-           each row in res
+           each row in res1
               .item 
-                h1.legend.text-center Categories
+                h1.legend.text-center Product
+                br
+                h2.product #{row.productname}
+                p.product1 Product Id: #{row.ProductId}   
+                h2.product &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+                img.pimage2(src='../../#{row.productimage}', alt='#{row.productimage}')
+
                 br
 
-                h2.product #{row.productname}
-                h4.product1 Product Id: #{row.ProductId}   
-                p.price &euro;#{row.price}
-                p.itemp Description: #{row.productdescr}
-                img.pimage(src='../../#{row.productimage}", alt="#{row.productimage}')                 
-                  
-               a.button.btn.btn-light(href="/product/#{row.Id}") Show #{row.product_name}
+               a.button.btn.btn-light(href="/product/#{row.Id}") Show #{row.productname}
                a.button.btn.btn-light(href="/editproduct/#{row.Id}") Edit Product
                a.button.btn.btn-light(href="/deleteproduct/#{row.Id}") Delete Product
-                
- 
+
+
+

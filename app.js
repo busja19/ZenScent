@@ -18,6 +18,7 @@ var cookieParser = require('cookie-parser');
 var bcrypt = require('bcrypt-nodejs'); 
 
 
+
 app.use(cookieParser()); // read cookies (needed for auth)
 
 
@@ -120,23 +121,15 @@ passport.use(new GoogleStrategy({
 
 
 
-
-
-
 const path  = require('path');
 const VIEWS = path.join(__dirname, 'views');
-
-
-
+var reviews = require("./models/reviews.json")
 
 app.set('view engine', 'jade');
 
 
-
-
 var fs = require('fs');
 var mysql = require('mysql'); // sql Database access
-
 
 
 app.use(express.static("views"));
@@ -147,10 +140,6 @@ app.use(express.static("models"));//use models
 app.use('/stylesheets/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/'));
 
 //var reviews = require("./models/reviews.json");
-
-
-
-
 
 
 // create connection to Database
@@ -169,10 +158,7 @@ db.connect((err) =>{
  }
 });
 
-
-
-
-//tfacebook route
+//facebook route
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { successRedirect: '/',
@@ -184,7 +170,7 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { successRedirect: '/',
                                      failureRedirect: '/login' }));
                                      
-                                     
+//google route                                  
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
 
@@ -307,6 +293,7 @@ app.get('/insert', function(req,res){
 
 
 
+
  // function to render the create page
 app.get('/createproduct', function(req, res){
  
@@ -328,8 +315,6 @@ res.render('product', {root: VIEWS});
 });
 
 
-
-
 app.get('/editproduct/:id', function(req, res){
  let sql = 'SELECT * FROM product WHERE Id = "'+req.params.id+'";'
  
@@ -344,7 +329,7 @@ app.get('/editproduct/:id', function(req, res){
 
 
 app.post('/editproduct/:id', function(req, res){
-let sql = 'UPDATE product SET productname = "'+req.body.newproductname+'", Price = "'+req.body.newprice+'", Qty = "'+req.body.newQty+'", productdescr = "'+req.body.newproductdescr+'", productimage = "'+req.body.newproductimage+'", Id = "'+req.body.newid+'" WHERE Id = "'+req.params.id+'"'
+let sql = 'UPDATE product SET productname = "'+req.body.newproductname+'", Price = "'+req.body.newprice+'", Qty = "'+req.body.newQty+'", productdescr = "'+req.body.newproductdescr+'", productimage = "'+req.body.newproductimage+'", Id = "'+req.body.newid+'" WHERE ProductId = "'+req.params.id+'"'
 let query = db.query(sql, (err, res) =>{
  if(err) throw err;
  console.log(res);
@@ -358,11 +343,11 @@ res.redirect("/product/" + req.params.id);
 
 
 app.get('/product/:id', function(req, res){
- let sql = 'SELECT * FROM category WHERE Id = "'+req.params.id+'";' 
+ let sql = 'SELECT * FROM product WHERE Id = "'+req.params.id+'";' 
  let query = db.query(sql, (err, res1) =>{
   if(err)
   throw(err);
-  res.render('products', {root: VIEWS, res1}); 
+  res.render('product', {root: VIEWS, res1}); 
  });
   console.log("product page!");
 });
@@ -454,6 +439,12 @@ app.post('/search', function(req, res){
 app.get('/blog', function(req, res){
   res.render('blog', {root: VIEWS});
   console.log("blog!");
+});
+
+// function to render blog
+app.get('/admin', function(req, res){
+  res.render('admin', {root: VIEWS});
+  console.log("admin!");
 });
 
 
@@ -690,7 +681,103 @@ passport.deserializeUser(function(user, callback){
     );
 //};
 
+//-------------------------
+// REVIEWS
+//------------------------
 
+
+app.get('/reviews', function(req, res){
+ res.render("reviews", {reviews:reviews}
+ );
+ console.log("company's reviews");
+});
+
+// route to render add JSON page
+app.get('/addreview', function(req, res){
+  res.render('addreview', {root: VIEWS});
+  console.log("feedback!");
+});
+
+// post request to add JSON REVIEW
+
+//add reviews
+app.post('/addreview', function(req, res){
+	var count = Object.keys(reviews).length; 
+	console.log(count);
+	
+		function getMax(reviews , id) {
+		var max;
+		for (var i=0; i<reviews.length; i++) {
+			if(!max || parseInt(reviews[i][id]) > parseInt(max[id]))
+				max = reviews[i];
+    }
+		return max;
+	}
+	
+	var maxPpg = getMax(reviews, "id");
+	newId = maxPpg.id + 1; 
+	console.log(newId);
+	var review = {
+		name: req.body.name,
+		id: newId, 
+		content: req.body.content,
+
+	};
+		console.log(review);
+	var json  = JSON.stringify(reviews); 
+	
+ 
+	fs.readFile('./models/reviews.json', 'utf8', function readFileCallback(err, data){
+		if (err){
+		throw(err);
+	 }else {
+		reviews.push(review);
+		json = JSON.stringify(reviews, null , 4); 
+		fs.writeFile('./models/reviews.json', json, 'utf8'); 
+		
+	}});
+	res.redirect("/reviews");
+});
+// End ofJSON
+
+//edit reviews
+app.get('/editreview/:id', function(req, res){
+ function chooseProd(indOne){
+   return indOne.id === parseInt(req.params.id)}
+ 
+ console.log("Id of this review is " + req.params.id);
+  var indOne = reviews.filter(chooseProd);
+ res.render('editreview' , {indOne:indOne});
+  console.log("Edit Review Page Shown");
+ });
+
+app.post('/editreview/:id', function(req, res){
+ var json = JSON.stringify(reviews);
+ var keyToFind = parseInt(req.params.id); 
+ var data = reviews; 
+ var index = data.map(function(review){review.id}).keyToFind 
+  //var x = req.body.name;
+ var y = req.body.content
+ var z = parseInt(req.params.id)
+ reviews.splice(index, 1, {name: req.body.name, content: y, id: z});
+ json = JSON.stringify(reviews, null, 4);
+ fs.writeFile('./models/reviews.json', json, 'utf8'); 
+ res.redirect("/reviews");
+});
+
+//delete reviews
+app.get('/deletereview/:id', function(req, res){
+ var json = JSON.stringify(reviews);
+ var keyToFind = parseInt(req.params.id);
+ var data = reviews;
+ var index = data.map(function(d){d['id'];}).indexOf(keyToFind)
+ 
+ reviews.splice(index, 1);
+ 
+ json = JSON.stringify(reviews, null, 4);
+ fs.writeFile('./models/reviews.json', json, 'utf8'); 
+ res.redirect("/reviews");
+});
 
 
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", 
