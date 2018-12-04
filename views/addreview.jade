@@ -1,23 +1,26 @@
 
 extends layout
 block content
+ .rowcreate
   .header
    .container
        center
          h2 We would love your feedback...
     .container
 
+       form
+        .form-group
           form(method="post")
            fieldset
             legend.text-center Please add your review
              .form-group
-              label.col-md-3.control-label(for="name") Name:
+              label(for="name") Name:
               .col-md-9
                 input#name.form-control(name="name", type="text", placeholder="Your Name", required)
                 br
              .form-group
-               label.col-md-3.control-label(for="content") Product Review:
+               label(for="content") Review:
                .col-md-9
                 textarea#exampleTextarea.form-control(name="content", type="text", placeholder="Your Review", required)
                 br
-             button.btn.btn-secondary(type="submit") SUBMIT
+              button.btn1(type="submit") Submit your Review

@@ -1,0 +1,27 @@
+extends layout
+block content
+ .headers
+  .rowcreated
+    h2 Create new blog entry
+    .container
+     .row
+      .col-md-6.col-md-offset-3
+         form.form-horizontal#product-form(method='post')
+           fieldset
+            .form-group
+              label.col-md-3.control-label(for="title") Blog Title:
+              .col-md-9  
+              input#productname.form-control(name="title", type="text", required='', placeholder="title of blog")
+
+            .form-group
+              label.col-md-3.control-label(for="content") Blog Content:
+              .col-md-9
+              textarea#exampleTextarea.form-control(name='content', placeholder='Please enter blog text here', required='')
+
+            .form-group
+              label.col-md-3.control-label(for="image") Image:
+              .col-md-9
+              input#price.form-control(name="image", type="text", required='', placeholder="image")
+
+            button.btn.btn-light(type='submit') Submit
+            

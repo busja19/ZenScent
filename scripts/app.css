@@ -97,6 +97,14 @@ background-image: url("stones-zen.jpg");
     background-size: cover;
 }
 
+
+.rowcreate {
+background-image: url("zenreview.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 .pimage {
     width: 20%; 
     height: 300px;
@@ -950,4 +958,3 @@ input[type=checkbox]:not(old):checked + label > span:before {
   .signup-content {
     padding: 50px 25px; } }
 
-/*# sourceMappingURL=style.css.map */

@@ -9,37 +9,58 @@ block content
  .header
   .container
     
-       center
-         h2 Products
-  .header
-   section#home
-         hr
-         .rows
-           .col-sm-12
-             p.lead
-               | some text
-          
-               | some text
-              
+    section#products 
+     a.button.btn.btn-secondary(href="/createproduct") Create New Product
+     a.button.btn.btn-secondary(href="/create") Create New Category
+     .content-section-a
 
-               .category-container
-                 each row in res1
-                  .item
-                    h1.category #{row.Id}
-                    h1.category #{row.category_name}
-                    p.itemp #{row.category_descr}
-                    img.pimage(src="#{row.category_image}", alt="#{row.category_image}")
-                    br
-                    br
-
-
-                   a.button.btn.btn-light(href="/category/#{row.Id}") Show Category #{row.category_name}
-                   a.button.btn.btn-light(href="/editcategory/#{row.Id}") Edit Category
-                   a.button.btn.btn-light(href="/deletecategory/#{row.Id}") Delete Category
-              
-              a.button.btn.btn-secondary(href="/create") Create New Category
+         .prod-container
+           each row in res1
+              .item 
+                p.product1 Product Id: #{row.ProductId}         
+                h1.product #{row.productname}
+                h4.itemp Category: #{row.category_name}
+                img.pimage(src="#{row.productimage}", alt="#{row.productimage}")
+                h2.price Price: &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+                br
+                br
                
-        section#products 
-         a.button.btn.btn-secondary(href="/createproduct") Create New Product
+
+               a.button.btn.btn-secondary(href="/product/#{row.ProductId}") View Product
+               a.button.btn.btn-secondary(href="/editproduct/#{row.ProductId}") Edit Product
+               a.button.btn.btn-secondary(href="/deleteproduct/#{row.ProductId}") Delete Product
+               br
+               hr
+              
+
+               
+         section#products 
+   
 
   
+  
+  extends layout
+block content
+   section#products 
+    a.button.btn.btn-secondary(href="/createproduct") Create New Product
+    .content-section-a
+
+         .prod-container
+           each row in res1
+              .item 
+                p.product1 Product Id: #{row.ProductId}         
+                h1.product #{row.productname}
+                h4.itemp Category: #{row.category_name}
+                img.pimage(src="#{row.productimage}", alt="#{row.productimage}")
+                h2.price Price: &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+                br
+                br
+               
+
+               a.button.btn.btn-light(href="/product/#{row.ProductId}") Show #{row.productname}
+               a.button.btn.btn-light(href="/editproduct/#{row.ProductId}") Edit Product
+               a.button.btn.btn-light(href="/deleteproduct/#{row.ProductId}") Delete Product
+               br
+               hr

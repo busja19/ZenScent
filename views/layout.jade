@@ -34,16 +34,27 @@ html(lang='en')
               |  Sign Up
             a.navbar-brand(href='/login', "ins-ic='', mr-3"='')
               i.fas.fa-user.fa-sm
-              |  Login
+              |  Login 
             a.navbar-brand(href='/logout', "ins-ic='', mr-3"='')
               i.fas.fa-user.fa-xs
               | Logout
+
+        
+              
+              
             a.navbar-brand(href='/cart', "ins-ic='', mr-3"='')
               i.fas.fa-shopping-cart.fa-sm
               |  Cart
+
         ul.nav.navbar-nav.navbar-right
           nav.navbar.navbar-light.bg-light
             li
+            a.navbar-brand(href='/adminlogin', "ins-ic='', mr-3"='')
+              i.fas.fa-user.fa-sm
+              |  Admin Login      
+            a.navbar-brand(href='/adminsignup', "ins-ic='', mr-3"='')
+              i.fas.fa-sign-in-alt.fa-sm
+              |  Sign Up
               a.navbar-brand("ins-ic='', mr-3"='')
                 i.fas.fa-truck.fa-sm
                 |  Free Shipping
@@ -57,13 +68,13 @@ html(lang='en')
           li.nav-item.dropdown
             a#navbardrop.nav-link.dropdown-toggle(href='#', data-toggle='dropdown') Categories
             .dropdown-menu
-              a.dropdown-item(href='#') Essential Oils
-              a.dropdown-item(href='#') Plant Oils
-              a.dropdown-item(href='#') Difusers
+              a.dropdown-item(href='/category/essentialoils') Essential Oils
+              a.dropdown-item(href='/category/carrieroils') Carrier Oils
+              a.dropdown-item(href='/category/diffusers') Difusers
           li.nav-item
             a.nav-link(href='blog') Blog
           li.nav-item
-            a.nav-link(href='#') Contact Us
+            a.nav-link(href='contactus') Contact Us
       .mx-auto.order-0
         a.navbar-brand.mx-auto(href='#')
           img(src='/logo.jpg', width='130', height='90', alt='ZenScent')
@@ -78,13 +89,13 @@ html(lang='en')
     .container-fluid.bg-light
       .row
         .col
-          a.nav-link(href='#')
+          a.nav-link(href='/category/essentialoils')
             h3 Essential Oils
         .col
-          a.nav-link(href='#')
+          a.nav-link(href='/category/carrieroils')
             h3 Carrier Oils
         .col
-          a.nav-link(href='#')
+          a.nav-link(href='/category/diffuser')
             h3 Difusers
             
             

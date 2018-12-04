@@ -1,0 +1,29 @@
+
+extends layout
+block content
+ .header
+  .rowcreated
+   .container
+       center
+         h2 We’re here to help so please give us a shout. Use the form below to drop us an e-mail. Old-fashioned phone calls work too!
+    .container
+     .row
+      .col-md-6.col-md-offset-3
+       form.form-horizontal#contact-form(method='post')
+           fieldset
+            .form-group
+              label.col-md-3.control-label(for='name') Name *
+              .col-md-9  
+              input#name.form-control(name='name', type='text', placeholder='Your name', required='required')
+            .form-group
+              label.col-md-3.control-label(for='email') Email *
+              .col-md-9
+              input#email.form-control(name='email', type='text', placeholder='Your email', required='required', title="your e-mail email (format: xxx@xxx.xxx)", pattern="[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*")
+            .form-group
+              label.col-md-3.control-label(for='comment') Message *
+              .col-md-9
+              textarea#exampleTextarea.form-control(name='comment', placeholder='Enter your message here', rows='3', required='required')
+              br
+            button.btn.btn-light(type='submit') Submit
+        hr    
+.form-group           

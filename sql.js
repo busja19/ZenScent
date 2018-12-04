@@ -81,3 +81,48 @@ app.get('/productalter', function(req,res){
   res.send("modifiied Table!")
 });
 // End DB Product Category Table
+
+// DB Product Category Table
+app.get('/alter', function(req,res){
+ let sql = 'ALTER TABLE users CHANGE Id UserId int(11)'
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+  res.send("modifiied Table!")
+});
+// End DB Product Category Table
+
+
+// DB Product Category Table
+app.get('/alter', function(req,res){
+ let sql = 'ALTER TABLE product DROP FOREIGN KEY product_ibfk_1'
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+  res.send("modifiied Table!")
+});
+
+
+
+// DB Product Category Table
+app.get('/alter', function(req,res){
+ let sql = 'ALTER TABLE product ADD category_name varchar(255)'
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+  res.send("modifiied Table!")
+});
+
+
+// DB Product Category Table
+app.get('/deleteall', function(req,res){
+ let sql = 'DROP TABLE product'
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+  res.send("modifiied Table!")
+});

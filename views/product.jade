@@ -2,22 +2,29 @@ extends layout
 block content
     .container
      .row
-      .col-md-6.col-md-offset-3
+ 
            each row in res1
               .item 
-                h1.legend.text-center Product
                 br
-                h2.product #{row.productname}
-                p.product1 Product Id: #{row.ProductId}   
-                h2.product &euro;#{row.price}
-                p.itemp Description: #{row.productdescr}
                 img.pimage2(src='../../#{row.productimage}', alt='#{row.productimage}')
 
+                h2.product #{row.productname}
+                p.product1 Product Id: #{row.ProductId}   
+                p.product1 Category: #{row.category_name}
+                h2.product &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+
                 br
+               a.button.btn.btn-secondary(href="/cart/#{row.ProductId}") Add to cart
+               a.button.btn.btn-secondary(href="/product/#{row.ProductId}") View Product
+               a.button.btn.btn-secondary(href="/editproduct/#{row.ProductId}") Edit Product
+               a.button.btn.btn-secondary(href="/deleteproduct/#{row.ProductId}") Delete Product
+    
+              a.button.btn.btn-secondary(href="/reviews") View Product Reviews
+              a.button.btn.btn-secondary(href="/addreview") Add Product Review
 
-               a.button.btn.btn-light(href="/product/#{row.Id}") Show #{row.productname}
-               a.button.btn.btn-light(href="/editproduct/#{row.Id}") Edit Product
-               a.button.btn.btn-light(href="/deleteproduct/#{row.Id}") Delete Product
 
-
-
+                if row.Quantity>0
+                  a(href='addtocart/#{row.ProductId}*#{row.Price}*#{row.productname}')
+                    button.button(type='button')
+                      i.fa.fa-shopping-cart(aria-hidden='true')   Add to cart

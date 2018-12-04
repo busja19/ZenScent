@@ -1,30 +1,42 @@
 extends layout
 block content
-    .row
-      h1 Please add new Product
-      .formHold
-        h1.itemtitle New Product Form
-        form(method="post")
-       
-          fieldset
+ .headers
+  .rowcreated
+    .container
+     .row
+      .col-md-6.col-md-offset-3
+         form.form-horizontal#product-form(method='post')
+           fieldset
           
-            label(for="productname") Product Name:
-            input(name="productname", type="text", placeholder="Product Name")
 
-            label(for="Id") Category Id:
-            input(name="Id", type="int", placeholder="Category Id")
+            .form-group
+              label.col-md-3.control-label(for="productname") Product Name:
+              .col-md-9  
+              input#productname.form-control(name="productname", type="text", placeholder="Product Name")
+              
+            .form-group
+              label.col-md-3.control-label(for="category_name") Category Name
+              .col-md-9
+              input#category_name.form-control(name="category_name", type="text", placeholder="Category")
+              
+            .form-group
+              label.col-md-3.control-label(for="price") Price:
+              .col-md-9
+              input#price.form-control(name="price", type="int", placeholder="Price")
+              
+            .form-group
+              label.col-md-3.control-label(for="Qty") Qty:
+              .col-md-9
+              input#price.form-control(name="Qty", type="int", placeholder="Qty")
 
+            .form-group
+              label.col-md-3.control-label(for="productdescr") Description:
+              .col-md-9
+              textarea#exampleTextarea.form-control(name="productdescr", type="text", rows='3', placeholder="Description")
 
-            label(for="price") Price:
-            input(name="price", type="int", placeholder="Price")
-            
-            label(for="Qty") Qty:
-            input(name="Qty", type="int", placeholder="Qty")
-            
-            label(for="productdescr") Description:
-            input(name="productydescr", type="text", placeholder="Description")
-            
-            label(for="productimage") Product Image:
-            input(name="productimage", type="text", placeholder="Image")
+            .form-group
+              label.col-md-3.control-label(for="productimage") Product Image
+              .col-md-9
+              input#price.form-control(name="productimage", type="text", placeholder="Image")
 
-            button.btn.btn-secondary(type="submit") Create Product
+            button.btn.btn-light(type='submit') Submit

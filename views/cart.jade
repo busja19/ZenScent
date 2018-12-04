@@ -1,35 +1,43 @@
 extends layout
-
 block content
-    div(class='container')
-        h1= title
-        p Welcome to #{title}
+    .row
+     h1 
+     .formHold
+        h1 Checkout
+         if session.cart.totalItems
+          .cart.page
+            ul.list-group
+              each item in products
+                li.list-group-item.clearfix
+                  .col-xs-5
+                    strong #{item.item}
+                  .col-xs-2.text-right #{item.quantity} 
+                  .col-xs-3.text-right
+                    | #{item.price}  EUR
+                  .col-xs-2.text-right
+                    a(href='/removefromcart/#{item.id}*#{item.quantity}')
+                     button.button(type='button') Remove
+          .text-right
+            strong Total: #{session.cart.totalPrice} EUR
+          hr
+          .text-right
+          p Pay by Paypal
+          .h2 &nbsp;&nbsp;
+            form(action='https://www.paypal.com/cgi-bin/webscr', method='post')
+              input(type='hidden', name='business', value='dnevedomska29@gmail.com')
+              input(type='hidden', name='cmd', value='_xclick')
+              input(type='hidden', name='item_name', value='Order')
+              input(type='hidden', name='undefined_quantity', value='1')
+              input(type='hidden', name='amount', value='#{session.cart.totalPrice}')
+              input(type='hidden', name='amount', value='50.00')
+              input(type='hidden', name='currency_code', value='EUR')
+              input(type='image', name='submit', border='0', src='https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif', alt='Buy Now')
+              img(alt='', border='0', width='1', height='1', src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif')
+              input(type='hidden', name='return', value='https://000f6e09dec140bca863c66689e56772.vfs.cloud9.eu-west-1.amazonaws.com/confirmation')
+         else
+          h2 Your shopping cart is empty
+          p &nbsp;&nbsp;
+          a(href='/products') 
+            button.button(type='button') Exit
 
-        if(cart_data && cart_data.length > 0)
-            div(class='cart')
-                div(class='cart-top') Cart
-                each cart_item in cart_data
-                    div(class='cart-item')
-                        span=cart_item.name
-                        span=cart[cart_item.id]
-                        - var value=(Math.round((cart[cart_item.id] * cart_item.price) * 100) / 100)
-                        - total = (total || 0) + value;
-                        span=currency + value
-                div(class='cart-bottom')
-                    a(class='button', href='/clear') Clear
-                    a(class='button', href='/checkout') Checkout
-                    b Total : #{currency + total}
-
-
-        div(class='items')
-            each item in data
-                div(class='item')
-                    h3=item.name
-                    p=item.description
-                    div(class='price')
-                        span=currency + item.price
-                        div(class='form-items')
-                            form(method='post')
-                                input(type='text', name='count', value='1')
-                                input(type='hidden', name='id', value='#{item.id}')
-                                input(type='submit', class='item-select', name='add', id='#{item.id}', value='Add to cart')
+            
