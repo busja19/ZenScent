@@ -1,0 +1,18 @@
+extends layout
+block content
+    .container
+     .row
+      .col-md-10.col-md-offset-4
+           each row in res1
+              .item 
+                br
+
+                h3  #{row.category_name}
+                img.pimage2(src='../../#{row.category_image}', alt='#{row.category_image}')
+                p  #{row.category_descr}
+
+
+                br
+
+
+                a.button.btn.btn-secondary(href="/carrierproduct") View Products in this category

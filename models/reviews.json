@@ -3,10 +3,15 @@
         "name": "Anna",
         "content": "Lovely products. Best Essential oils I have ever bought",
         "id": 1
-        
     },
-    {    "name": "Diana",
+    {
+        "name": "Diana",
         "content": "Bought these esstential oils and let be them ... cheap and wonderful. Love the cinnamon and lemongrass! Will definitely buy more ! Well done ZenScent!",
         "id": 2
+    },
+    {
+        "name": "Jack",
+        "id": 3,
+        "content": "Great quality essential oils!"
     }
 ]

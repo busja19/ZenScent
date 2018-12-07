@@ -71,35 +71,4 @@ block content
      console.log('User signed out.');
      });
      }
-  .row
-  .container
-    .item
-      h1
-        span.fa.fa-sign-in
-        |  Signup
-
-        if (message.length > 0)
-          #alert
-           p= message        
-          .signup-content
-      // LOGIN FORM
-      form(action='/signup', method='post')
-        .form-group
-          label Username
-          input.form-control(type='text', name='username')
-        .form-group
-          label Password
-          input.form-control(type='password', name='password')
-        button.button(type='submit') Signup
-      hr
-      p
-        | Already have an account? 
-        br
-        a.button(href='/login') Login
-      p
-        | Or go 
-        br
-        a.button(href='/') home
-        | .
-       
-         
+ 

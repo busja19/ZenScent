@@ -1,0 +1,26 @@
+extends layout
+block content
+    .container
+     .row
+ 
+           each row in res1
+              .item 
+                br
+                img.pimage2(src='../../#{row.productimage}', alt='#{row.productimage}')
+
+                h2.product #{row.productname}
+                p.product1 Product Id: #{row.ProductId}   
+                p.product1 Category: #{row.category_name}
+                h2.product &euro;#{row.price}
+                p.itemp Description: #{row.productdescr}
+
+                br
+               a.button.btn.btn-secondary(href="/cart/#{row.ProductId}") Add to cart
+               a.button.btn.btn-secondary(href="/product/#{row.ProductId}") View Product
+
+    
+              a.button.btn.btn-secondary(href="/reviews") View Product Reviews
+              a.button.btn.btn-secondary(href="/addreview") Add Product Review
+
+             br
+           

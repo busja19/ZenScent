@@ -1,22 +1,20 @@
 extends layout
-
 block content
-    div(class='container')
-        h1= title
+ .col-md-8.col-md-offset-4
+   .rowcreate
         a(href='/') Home
 
         if(cart_data.length > 0)
-            div(class='cart')
-                div(class='cart-top') Cart
+                div(class='cart') Cart
                 each cart_item in cart_data
-                    div(class='cart-item')
+                    div(class='item')
                         span=cart_item.name
                         span=cart[cart_item.id]
                         - var value=(Math.round((cart[cart_item.id] * cart_item.price) * 100) / 100)
                         - total = (total || 0) + value;
                         span=currency + value
-                div(class='cart-bottom')
-                    b Total : #{currency + total} &nbsp;
+                div(class='cartbottom')
+                    b Total : #{currency + total} 
                     a(class='button', href='/pay') Pay
         else
             h3 Shopping Cart is empty

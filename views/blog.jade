@@ -1,8 +1,9 @@
   
 extends layout
 block content
- .col-md-8.col-md-offset-4
-   .rowcreate
+
+   .col-md-8.col-md-offset-4
+
      a.button.btn.btn-secondary(href="/addblog") Add new post  
      center   
     .grid-container
@@ -13,7 +14,5 @@ block content
         img(src="/" + blog.image style='max-width:60%; max-height:300px; margin: auto' alt= blog.imgname)
         p #{blog.content}
         br
-        a.btn1(href="/editblog/#{blog.id}") Edit Blog
-        a.btn1(href="/deleteblog/#{blog.id}") Delete
-     
+
   

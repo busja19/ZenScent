@@ -18,11 +18,11 @@ html(lang='en')
       .container-fluid
         ul.nav.navbar-nav.navbar-left
           nav.navbar.navbar-light.bg-light
-            a.navbar-brand(href='https://www.facebook.com/diana.nevedomska?ref=bookmarks', "ins-ic='', mr-3"='')
+            a.navbar-brand(href='https://www.facebook.com/ZenScentDublin/', "ins-ic='', mr-3"='')
               i.fa.fa-sm.fa-facebook.fa-sm
-            a.navbar-brand(href='#', "ins-ic='', mr-3"='')
+            a.navbar-brand(href='https://twitter.com/Dianadianaaivar', "ins-ic='', mr-3"='')
               i.fa.fa-sm.fa-twitter.fa-sm
-            a.navbar-brand(href='#', "ins-ic='', mr-3"='')
+            a.navbar-brand(href='https://www.instagram.com/explore/tags/essentialoils/?hl=en', "ins-ic='', mr-3"='')
               i.fa.fa-sm.fa-instagram.fa-sm
         ul.nav.navbar-nav
           nav.navbar.navbar-light.bg-light
@@ -52,9 +52,9 @@ html(lang='en')
             a.navbar-brand(href='/adminlogin', "ins-ic='', mr-3"='')
               i.fas.fa-user.fa-sm
               |  Admin Login      
-            a.navbar-brand(href='/adminsignup', "ins-ic='', mr-3"='')
+            a.navbar-brand(href='/admin', "ins-ic='', mr-3"='')
               i.fas.fa-sign-in-alt.fa-sm
-              |  Sign Up
+              |  Dashboard
               a.navbar-brand("ins-ic='', mr-3"='')
                 i.fas.fa-truck.fa-sm
                 |  Free Shipping
@@ -64,13 +64,10 @@ html(lang='en')
         ul.navbar-nav.mr-auto
           li.nav-item
             a.nav-link(href='/') Home
-          li.nav-item.active
-          li.nav-item.dropdown
-            a#navbardrop.nav-link.dropdown-toggle(href='#', data-toggle='dropdown') Categories
-            .dropdown-menu
-              a.dropdown-item(href='/category/essentialoils') Essential Oils
-              a.dropdown-item(href='/category/carrieroils') Carrier Oils
-              a.dropdown-item(href='/category/diffusers') Difusers
+          li.nav-item
+            a.nav-link(href='categories') Categories
+          li.nav-item
+            a.nav-link(href='products') Products
           li.nav-item
             a.nav-link(href='blog') Blog
           li.nav-item
@@ -89,13 +86,13 @@ html(lang='en')
     .container-fluid.bg-light
       .row
         .col
-          a.nav-link(href='/category/essentialoils')
+          a.nav-link(href='/essential')
             h3 Essential Oils
         .col
-          a.nav-link(href='/category/carrieroils')
+          a.nav-link(href='/carrier')
             h3 Carrier Oils
         .col
-          a.nav-link(href='/category/diffuser')
+          a.nav-link(href='/diffusers')
             h3 Difusers
             
             
@@ -129,7 +126,7 @@ html(lang='en')
                     ul.nav.navbar-nav.navbar-left
                       li
                         i.fa.fa-map-marker.fa-lg
-                        |     Keatingspark, Rathcoole, Co. Dublin
+                         a(href='https://www.google.ie/maps/place/Keatingspark,+Co.+Dublin,+D24+R998/@53.2753505,-6.5006646,17z/data=!3m1!4b1!4m5!3m4!1s0x4867769428fc3f5d:0x877d2a74463d9906!8m2!3d53.2753505!4d-6.4984759') Keatingspark, Rathcoole, Co. Dublin
                       li
                         i.fa.fa-phone.fa-lg
                         | +353 870871114
@@ -146,10 +143,10 @@ html(lang='en')
                 section
                   ul.nav.navbar-nav.navbar-left
                     nav.navbar.navbar-light.bg-light
-                      a.navbar-brand(href='https://www.facebook.com/diana.nevedomska?ref=bookmarks', "ins-ic='', mr-3"='')
+                      a.navbar-brand(href='https://www.facebook.com/ZenScentDublin/', "ins-ic='', mr-3"='')
                         i.fa.fa-sm.fa-facebook.fa-sm
-                      a.navbar-brand(href='#', "ins-ic='', mr-3"='')
+                      a.navbar-brand(href='https://twitter.com/Dianadianaaivar', "ins-ic='', mr-3"='')
                         i.fa.fa-sm.fa-twitter.fa-sm
-                      a.navbar-brand(href='#', "ins-ic='', mr-3"='')
+                      a.navbar-brand(href='https://www.instagram.com/explore/tags/essentialoils/?hl=en', "ins-ic='', mr-3"='')
                         i.fa.fa-sm.fa-instagram.fa-sm
     br

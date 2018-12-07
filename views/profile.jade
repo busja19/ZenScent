@@ -4,16 +4,14 @@ block content
    .container
      .item
        h1
-         span.fa.fa-anchor
-         |  Profile Page
-       a.btn.btn-default.btn-sm(href='/logout') Logout
+         span.fa.fa-user
+         |  #{user.username} Profile Page
+
      .row
        // LOCAL INFORMATION
        .item
          .well
-           h3
-             span.fa.fa-user
-             |  Local
+
            p.itemp
              strong id
              | : #{user.Id}
@@ -23,3 +21,7 @@ block content
              br
              strong password
              | : #{user.password}
+             
+           a.button.btn.btn-secondary(href="/editprofile") Edit Profile    
+           br
+           a.button.btn.btn-secondary(href='/logout') Logout

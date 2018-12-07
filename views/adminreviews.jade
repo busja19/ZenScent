@@ -1,0 +1,20 @@
+extends layout
+block content
+   .rowcreated
+     a.button.btn.btn-secondary(href="/addreview") Add Product Review  
+     center
+    
+     h2 Customer reviews
+      .col-md-6.col-md-offset-3
+        legend.text-center See what our customers are saying about us
+         each review in reviews
+          form.form-horizontal
+          fieldset
+            .form-group
+               br
+               h2.itemtitle #{review.name}
+               h5.itemp #{review.content}
+               hr
+               a.button.btn.btn-secondary(href="/editreview/#{review.id}") Edit #{review.Name}
+               a.button.btn.btn-secondary(href="/deletereview/#{review.id}") Delete #{review.id}
+                           

@@ -12,14 +12,13 @@ block content
                 h4.itemp Category: #{row.category_name}
                 img.pimage(src="#{row.productimage}", alt="#{row.productimage}")
                 h2.price Price: &euro;#{row.price}
-                p.itemp Description: #{row.productdescr}
+
                 br
                 br
                
 
-               a.button.btn.btn-light(href="/product/#{row.ProductId}") Show #{row.productname}
-               a.button.btn.btn-light(href="/editproduct/#{row.ProductId}") Edit Product
-               a.button.btn.btn-light(href="/deleteproduct/#{row.ProductId}") Delete Product
-               br
-               hr
+               a.button.btn.btn-light(href="/product/#{row.ProductId}") View #{row.productname}
+
+              br
+              hr
  

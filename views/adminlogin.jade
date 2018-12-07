@@ -3,7 +3,7 @@ block content
   .limiter
    .container-login100(style="background-image: url('zen.jpg');")
      .wrap-login100.p-l-55.p-r-55.p-t-65.p-b-54
-       form(action='/login', method='post')
+       form(action='/adminlogin', method='post')
          span.login100-form-title.p-b-49
            | Login
          .wrap-input100.validate-input.m-b-23(data-validate='Username is required')
@@ -39,7 +39,7 @@ block content
           .wrap-login100-form-btn
             .login100-form-bgbtn
             button.login100-form-btn
-              a(href='/signup')  Register
+              a(href='/adminsignup')  Register
 
          
          .txt1.text-center.p-t-54.p-b-20         
@@ -68,7 +68,7 @@ block content
           .alert.alert-success= message
           .text-right.p-t-8.p-b-31
     // LOGIN FORM
-    form(action='/login', method='post')
+    form(action='/adminlogin', method='post')
       .form-group
         label Username
         input.form-control(type='text', name='username')
@@ -82,7 +82,7 @@ block content
     hr
     p
       | Need an account? 
-      a(href='/signup') Signup
+      a(href='/adminsignup') Signup
     p
       | Or go 
       a(href='/') home

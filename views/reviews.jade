@@ -1,6 +1,6 @@
 extends layout
 block content
-   .rowcreate
+   .rowcreated
      a.button.btn.btn-secondary(href="/addreview") Add Product Review  
      center
     
@@ -13,8 +13,6 @@ block content
             .form-group
                br
                h2.itemtitle #{review.name}
-               p.itemp #{review.content}
+               h4.itemp #{review.content}
                hr
-               a.btn1(href="/editreview/#{review.id}") Edit #{review.Name}
-               a.btn1(href="/deletereview/#{review.id}") Delete #{review.id}
-                           
+

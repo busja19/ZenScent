@@ -22,7 +22,7 @@ block content
           hr
           .text-right
           p Pay by Paypal
-          .h2 &nbsp;&nbsp;
+
             form(action='https://www.paypal.com/cgi-bin/webscr', method='post')
               input(type='hidden', name='business', value='dnevedomska29@gmail.com')
               input(type='hidden', name='cmd', value='_xclick')
@@ -36,8 +36,6 @@ block content
               input(type='hidden', name='return', value='https://000f6e09dec140bca863c66689e56772.vfs.cloud9.eu-west-1.amazonaws.com/confirmation')
          else
           h2 Your shopping cart is empty
-          p &nbsp;&nbsp;
+
           a(href='/products') 
             button.button(type='button') Exit
-
-            

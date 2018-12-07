@@ -10,8 +10,7 @@ block content
   .container
     
     section#products 
-     a.button.btn.btn-secondary(href="/createproduct") Create New Product
-     a.button.btn.btn-secondary(href="/create") Create New Category
+
      .content-section-a
 
          .prod-container
@@ -20,18 +19,14 @@ block content
                 p.product1 Product Id: #{row.ProductId}         
                 h1.product #{row.productname}
                 h4.itemp Category: #{row.category_name}
-                img.pimage(src="#{row.productimage}", alt="#{row.productimage}")
+                img.pimage2(src="#{row.productimage}", alt="#{row.productimage}")
                 h2.price Price: &euro;#{row.price}
-                p.itemp Description: #{row.productdescr}
                 br
                 br
                
 
                a.button.btn.btn-secondary(href="/product/#{row.ProductId}") View Product
-               a.button.btn.btn-secondary(href="/editproduct/#{row.ProductId}") Edit Product
-               a.button.btn.btn-secondary(href="/deleteproduct/#{row.ProductId}") Delete Product
-               br
-               hr
+              hr    
               
 
                
@@ -39,28 +34,3 @@ block content
    
 
   
-  
-  extends layout
-block content
-   section#products 
-    a.button.btn.btn-secondary(href="/createproduct") Create New Product
-    .content-section-a
-
-         .prod-container
-           each row in res1
-              .item 
-                p.product1 Product Id: #{row.ProductId}         
-                h1.product #{row.productname}
-                h4.itemp Category: #{row.category_name}
-                img.pimage(src="#{row.productimage}", alt="#{row.productimage}")
-                h2.price Price: &euro;#{row.price}
-                p.itemp Description: #{row.productdescr}
-                br
-                br
-               
-
-               a.button.btn.btn-light(href="/product/#{row.ProductId}") Show #{row.productname}
-               a.button.btn.btn-light(href="/editproduct/#{row.ProductId}") Edit Product
-               a.button.btn.btn-light(href="/deleteproduct/#{row.ProductId}") Delete Product
-               br
-               hr
