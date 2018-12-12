@@ -1,16 +1,16 @@
 var express = require('express');
-const helmet = require('helmet');
+const helmet = require('helmet');//security
 var app = express();
 
 
 var mysql = require('mysql');
-var flash = require('connect-flash');
+var flash = require('connect-flash');//flash
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var passport = require('passport');//pasport authentication
+var LocalStrategy = require('passport-local').Strategy;//pasport authentication
+var FacebookStrategy = require('passport-facebook').Strategy;//pasport authentication FB
+var TwitterStrategy = require('passport-twitter').Strategy;//pasport authenticationTW
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;//pasport authentication Google
 var ConnectRoles = require('connect-roles');
 
 var session = require('express-session');
@@ -49,12 +49,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 
-// required for passport
+// required for passport session
 app.use(session({
 	secret: 'vidyapathaisalwaysrunning',
 	resave: true,
 	saveUninitialized: true
  } )); // session secret
+ 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -64,10 +65,25 @@ var ConnectRoles = require('connect-roles');
 var roles = new ConnectRoles();
 
 
+// Session-persisted message middleware
+app.use(function(req, res, next){
+    var err = req.session.error,
+        msg = req.session.notice,
+        success = req.session.success;
+
+    delete req.session.error;
+    delete req.session.success;
+    delete req.session.notice;
+
+    if (err) res.locals.error = err;
+    if (msg) res.locals.notice = msg;
+    if (success) res.locals.success = success;
+
+    next();
+});
 
 
 //facebook passport authentication
-
 
 passport.use(new FacebookStrategy({
     clientID: '718725995170406',
@@ -128,7 +144,7 @@ passport.use(new FacebookStrategy({
 
 
 
-
+//passport gogole authentiction
 
 passport.use(new GoogleStrategy({
     clientID: '772750799389-482tptqeu8os9j2l62fhgfqct27sv3hu.apps.googleusercontent.com',
@@ -147,11 +163,14 @@ passport.use(new GoogleStrategy({
 const path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 var reviews = require("./models/reviews.json")
-var contact = require("./models/contact.json")
+var contacts = require("./models/contacts.json")
 var blogs = require("./models/blogs.json");
 let Cart = require('./models/cart');
 app.set('view engine', 'jade');
 
+
+
+//var products = JSON.parse(fs.readFileSync('./data/products.json', 'utf8'));
 
 var fs = require('fs');
 var mysql = require('mysql'); // sql Database access
@@ -185,27 +204,24 @@ db.connect((err) =>{
  }
 });
 
-//facebook route
+
+//passport facebook route
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { successRedirect: '/',
                                       failureRedirect: '/login' }));
    
-//twitter route
+//twitter passportroute
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { successRedirect: '/',
                                      failureRedirect: '/login' }));
                                      
-//google route                                  
+//google passport route                                  
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
 
-// GET /auth/google/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
+
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
@@ -215,8 +231,6 @@ app.get('/auth/google/callback',
 //CATEGORY TABLE
 //CATEGORY TABLE
 //CATEGORY TABLE
-
-
 
  // function to render the create page
 app.get('/create', function(req, res){
@@ -282,29 +296,14 @@ app.get('/deletecategory/:id', function(req, res){
  let query = db.query(sql, (err, res1) =>{
   if(err)
   throw(err);
-  res.redirect('/'); 
+  res.redirect('/admin'); 
  });
 });
 
 
 
-// filtered product page test categories
-app.get('/category/:id' , function(req, res){
-  
-  // function to filter the array based on the activity in this case Running
-  function checkCat(indCat) {
-    return indCat.id === req.params.id;
-}
 
-console.log(product.filter(checkCat)); // log the split filter based on the check age function 
-  cat = product.filter(checkCat);
-   res.render("category.jade", {cat:cat} // Inside the {} option we call the products variable from line 10 above 
-            ); 
-  console.log(cat);
-  })
-
-
-// function to render the home
+// function to render categories page
 app.get('/categories', function(req, res){
  let sql = 'SELECT * FROM category;'
  let query = db.query(sql, (err, res1) =>{
@@ -318,7 +317,7 @@ app.get('/categories', function(req, res){
 
 //-------
 
-
+//categories
 app.get('/essential', function(req, res){
  let sql2 = 'SELECT * FROM category WHERE Id = "16";' ;
  let query = db.query(sql2, (err, res1) =>{
@@ -330,7 +329,7 @@ app.get('/essential', function(req, res){
 });  
 
 app.get('/carrier', function(req, res){
- let sql2 = 'SELECT * FROM category WHERE Id = "39";' ;
+ let sql2 = 'SELECT * FROM category WHERE Id = "40";' ;
  let query = db.query(sql2, (err, res1) =>{
   if(err)
   throw(err);
@@ -348,6 +347,10 @@ app.get('/diffusers', function(req, res){
  });
   console.log("diffuser page!");
 });  
+//end categories
+
+
+//products for each category
 
 app.get('/essentialproduct', function(req, res){
  let sql2 = 'SELECT * FROM product WHERE category_name = "Esential Oils";' ;
@@ -378,6 +381,8 @@ app.get('/diffusersproduct', function(req, res){
  });
   console.log("diffuser product page!");
 }); 
+
+
 //PRODUCT TABLES
 //PRODUCT TABLES
 //PRODUCT TABLES
@@ -482,6 +487,9 @@ app.get('/deleteproduct/:id', function(req, res){
  });
 });
 
+//END PRODUCT TABLES
+//END PRODUCT TABLES
+//END PRODUCT TABLES
 
 //-----------------------
 //wishlist-----------
@@ -498,17 +506,73 @@ app.get('/wishlisttable', function(req,res){
 // End DB Product Table
 
 
-//END PRODUCT TABLES
-//END PRODUCT TABLES
-//END PRODUCT TABLES
 
 
 
-//app.get('/', function(req, res){
- // res.send("home page!"); // 
- //res.render('index', {root: VIEWS});
- // console.log("home page!");
-//});
+//-----------------------
+//subscribers-----------
+//---------------
+// Add table Subscribers
+// Add table Subscribers
+app.get('/subscriberstable', function(req,res){
+ let sql = 'CREATE TABLE Subscribers (SubscriberId int NOT NULL AUTO_INCREMENT PRIMARY KEY, Email VARCHAR(50) NOT NULL);'
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+  res.send("subscribers Table created!")
+});
+//end
+
+
+
+
+ // subscribe to newsletter
+app.get('/subscribe', function(req, res){
+ 
+  res.render('subscribe', {root: VIEWS});
+  console.log("subscribe to newsletter!");
+});
+
+app.post('/subscribe', function(req, res){
+  var name = req.body.name
+  let sql = 'INSERT INTO Subscribers (Email) VALUES ("'+req.body.email+'");';
+ 
+  let query = db.query(sql, (err, res1)=>{
+  if (err) throw err;
+  console.log(res1);
+  console.log("subscribed")
+ });
+  
+res.redirect('/');
+});
+
+
+
+ //  admin view subscribers list
+ app.get('/subscribed', function(req, res){
+ let sql2 = 'SELECT * FROM Subscribers'
+ let query = db.query(sql2, (err, res1) =>{
+  if(err)
+  throw(err);
+  res.render('subscribed', {root: VIEWS, res1}); 
+ });
+  console.log("subscribers!");
+});  
+
+
+ // function to delete database
+app.get('/deletesubscriber/:id', function(req, res){
+ let sql = 'DELETE FROM Subscribers WHERE SubscriberId = "'+req.params.id+'";'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+  res.redirect('/subscribed'); 
+ });
+});
+
+//end of subscribers code
+
 
 
 
@@ -525,7 +589,7 @@ app.get('/', function(req, res){
 
 });
 
-// function to render the home
+// function to render thecategories
 app.get('/categories', function(req, res){
  let sql = 'SELECT * FROM category;'
  let query = db.query(sql, (err, res1) =>{
@@ -538,17 +602,6 @@ app.get('/categories', function(req, res){
 });
 
 
-// function to render the products page
-app.get('/products', function(req, res){
- let sql = 'SELECT * FROM product;'
- let query = db.query(sql, (err, res1) =>{
-  if(err)
-  throw(err);
- 
-  res.render('products', {root: VIEWS, res1}); // use the render command so that the response object renders a HTML page
- });
- console.log("products!");
-});
 
 //this is my search button functionality
 app.post('/search', function(req, res){
@@ -563,7 +616,7 @@ app.post('/search', function(req, res){
 });
 
 
-
+//---users----
 
 // this is my User Table
 app.get('/createusertable', function(req,res){
@@ -584,7 +637,9 @@ app.get('/user', function(req,res){
  });
 });
 
+//-------------------
 // this is my Admin Table
+//------------------------
 app.get('/createadmin', function(req,res){
  let sql = 'CREATE TABLE admin (Id int NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(255), password varchar(255));'
  let query = db.query(sql,(err,res)=>{
@@ -593,6 +648,23 @@ app.get('/createadmin', function(req,res){
  });
 });
 //users log in table - END
+
+
+
+
+// admin function to view users
+app.get('/adminusers', function(req, res){
+ let sql = 'SELECT * FROM users;'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+ 
+  res.render('adminusers', {root: VIEWS, res1}); // use the render command so that the response object renders a HTML page
+ });
+ console.log("adminusers!");
+});
+
+
 
 // this is my User Table
 app.get('/adminlog', function(req,res){
@@ -604,14 +676,99 @@ app.get('/adminlog', function(req,res){
 });
 
 
+//app.get('/admin', isLoggedIn, isAdmin function(req, res){
+//    res.send('Admin panel!');
+//});
 
-//render Admin page
-app.get('/admin', function(req, res){
-  res.render('admin', {root: VIEWS});
-   console.log('Admin Dashboard');
- });
+//app.get('/dashboard', isLoggedIn, isAdmin function(req, res){
+//app.get('/admin', isLoggedIn, isAdmin function(req, res){
 
 
+
+//render Admin page!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//app.get('/admin', isAdmin, function(req, res){
+// user : req.user
+//  res.redirect('/admin');
+//   console.log('Admin Dashboard');
+// });
+
+
+//passport authentication for admin
+app.get('/admin', isLoggedIn,function(req,res){
+    res.render('admin');
+    console.log("admin dashboard");
+});
+
+app.get('/adminlogin', function(req, res) {
+
+		// render the page and pass in any flash data if it exists
+		res.render('adminlogin', { message: req.flash('loginMessage') });
+
+	});
+
+	// process the admin login form
+	app.post('/adminlogin', passport.authenticate('admin-login', {
+            successRedirect : '/admin', // redirect to the secure profile section
+            failureRedirect : '/login', // redirect back to the signup page if there is an error
+            failureFlash : true // allow flash messages
+		}),
+        function(req, res) {
+            console.log("hello");
+
+            if (req.body.remember) {
+              req.session.cookie.maxAge = 1000 * 60 * 3;
+            } else {
+              req.session.cookie.expires = false;
+            }
+        res.redirect('/dashboard');
+    });
+
+
+    passport.serializeUser(function(user, done) {
+        done(null, user.Id); // Very important to ensure the case if the Id from your database table is the same as it is here
+    });
+
+    // used to deserialize the user
+    passport.deserializeUser(function(id, done) {
+       db.query("SELECT * FROM admin WHERE Id = ? ",[id], function(err, rows){
+            done(err, rows[0]);
+        });
+    });
+    
+    
+    
+      passport.use(
+        'admin-login',
+        new LocalStrategy({
+            // by default, local strategy uses username and password, we will override with email
+            usernameField : 'name',
+            passwordField : 'password',
+            passReqToCallback : true // allows us to pass back the entire request to the callback
+        },
+        function(req, username, password, done) { // callback with email and password from our form
+            db.query("SELECT * FROM admin WHERE name = ?",[username], function(err, rows){
+                if (err)
+                    return done(err);
+                if (!rows.length) {
+                    return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+                }
+
+                // if the user is found but the password is wrong
+               // if (!bcrypt.compareSync(password, rows[0].password))
+                //    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+
+                // all is well, return successful user
+                return done(null, rows[0]);
+            });
+        })
+    );
+//};
+
+
+    
+//-----------------------------
+//--admin dashboard functions
+//------------------------------
 app.get('/adminblog', function(req, res){
   res.render('adminblog', {blogs:blogs});
    console.log('Admin blogs management');
@@ -661,10 +818,16 @@ app.get('/adminproducts', function(req, res){
    console.log('Admin products management');
 });  
 
+
+
+
 // =====================================
 	// LOGIN ===============================
 	// =====================================
 	// show the login form
+
+
+
 app.get('/login', function(req, res) {
 
 		// render the page and pass in any flash data if it exists
@@ -690,16 +853,6 @@ app.get('/login', function(req, res) {
     });
 
 
-    
-
-app.get('/adminlogin', function(req, res) {
-
-		// render the page and pass in any flash data if it exists
-		res.render('adminlogin', { message: req.flash('loginMessage') });
-
-	});	
-
-
 
 
 	// =====================================
@@ -716,16 +869,9 @@ app.get('/adminlogin', function(req, res) {
 		successRedirect : '/profile', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
-		
 	}));
 
- //outer functions
-  function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-     return next();}
-   else{
-    res.render('/');}
-   }
+	
 
 	// =====================================
 	// PROFILE SECTION =========================
@@ -743,19 +889,58 @@ app.get('/adminlogin', function(req, res) {
 	// =====================================
 	// LOGOUT ==============================
 	// =====================================
+	
+	
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
 
+
+
+// route middleware to make sure
+
 function isLoggedIn(req, res, next) {
+
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
+		return next();
+
+	// if they aren't redirect them to the home page
+	res.redirect('/');
+}
+
+
+// see are they admin
+function isAdmin(req, res, next) {
+	if (req.user.admin)
 		return next();
 	res.redirect('/');
 }
 
 
+
+
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//app.get('/admin', isLoggedIn, isAdmin, funcion(req, res){
+  // user is logged and is admin
+//})
+
+//app.get('/admin', isLoggedIn, isModerator, funcion(req, res){
+  // user is logged and is admin
+//})
+
+
+ app.get('/alterusers', function(req, res)
+ { //
+ let sql = 'ALTER TABLE users ADD COLUMN admin BOOLEAN DEFAULT FALSE;' // 
+ let query = db.query(sql, (err, res) => {  // 
+ if(err) throw err;//    
+ console.log(res);         // 
+ }); // res.send("altered"); 
+  });
 
 
 
@@ -766,36 +951,23 @@ function isLoggedIn(req, res, next) {
     // =========================================================================
     // passport session setup ==================================================
     // =========================================================================
-
+    
     passport.serializeUser(function(user, done) {
-        done(null, user.UserId);
+        done(null, user.UserId); // Very important to ensure the case if the Id from your database table is the same as it is here
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(UserId, done) {
-       db.query("SELECT * FROM users WHERE UserId = ? ",[UserId], function(err, rows){
+    passport.deserializeUser(function(id, done) {
+       db.query("SELECT * FROM users WHERE UserId = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
     });
 
-
-
-passport.serializeUser(function(user, callback){
-        console.log('serializing user.');
-        callback(null, user.UserId);
-    });
-
-passport.deserializeUser(function(user, callback){
-       console.log('deserialize user.');
-       callback(null, user.UserId);
-    });
-
-
-
     // =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
-    passport.use(
+
+   passport.use(
         'local-signup',
         new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
@@ -818,24 +990,31 @@ passport.deserializeUser(function(user, callback){
                         username: username,
                         password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
                     };
-              if(newUserMysql.type=='user'){ 
-                    var insertQuery = "INSERT INTO users ( username, password ) values (?, ?)";
+
+                    var insertQuery = "INSERT INTO users ( username, password ) values (?,?)";
 
                     db.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
-                        newUserMysql.Id = rows.insertId;
+                        newUserMysql.UserId = rows.insertId;
 
                         return done(null, newUserMysql);
                     });
-              }
                 }
             });
         })
     );
-    
+ 
+
+    // =========================================================================
+    // LOCAL LOGIN =============================================================
+    // =========================================================================
+    // we are using named strategies since we have one for login and one for signup
+    // by default, if there was no name, it would just be called 'local'
+  
     // =========================================================================
     // LOCAL LOGIN ============================================================
     // ========================================================================= 
             
+
     passport.use(
         'local-login',
         new LocalStrategy({
@@ -865,10 +1044,6 @@ passport.deserializeUser(function(user, callback){
 
 
 
-
-
-
-
 // =====================================
 // PROCESS UPDATE PROFILE=======================
 // =====================================
@@ -881,13 +1056,14 @@ app.get('/editprofile', isLoggedIn, function(req, res) {
 
 // process the update profile form
 app.post('/editprofile', isLoggedIn, function(req, res) {
-    user.update({_id: req.session.passport.user}, {
+    user.update({UserId: req.session.passport.user}, {
         displayName: req.body.displayName 
     }, function(err, numberAffected, rawResponse) {
        console.log('new profile update error');
     });
     res.render('profile', {
-        user : req.user // get the user out of session and pass to template
+        
+        // get the user out of session and pass to template
     });
 });
 
@@ -1003,16 +1179,16 @@ app.get('/contactus', function(req, res){
 });
 //json
 app.post('/contactus', function(req, res){
-  var count = Object.keys(contact).length;
+  var count = Object.keys(contacts).length;
   console.log(count);
   var max
    function getMax(contacts, id){
     for(var i=0; i<contacts.length; i++){
-      if(!max || parseInt(contact[i][id]) > parseInt(max[id]))
+      if(!max || parseInt(contacts[i][id]) > parseInt(max[id]))
         max = contacts[i];
     }return max;
   }
-  var maxPpg = getMax(contact, "id");
+  var maxPpg = getMax(contacts, "id");
   var newId = maxPpg.id + 1;
   console.log(newId);
   var formData = {
@@ -1024,14 +1200,14 @@ app.post('/contactus', function(req, res){
   console.log(formData);
   
 
-  var json = JSON.stringify(contact); 
-  fs.readFile('./models/contact.json', 'utf8', function readFileCallback(err, data){
+  var json = JSON.stringify(contacts); 
+  fs.readFile('./models/contacts.json', 'utf8', function readFileCallback(err, data){
    if(err){
      throw(err); 
      }else{
-          contact.push(formData); 
-     json = JSON.stringify(contact, null, 4); 
-     fs. writeFile('./models/contact.json', json, 'utf8');
+          contacts.push(formData); 
+     json = JSON.stringify(contacts, null, 4); 
+     fs. writeFile('./models/contacts.json', json, 'utf8');
    }
   });
   res.render('thanks', {root:VIEWS});
@@ -1039,270 +1215,14 @@ app.post('/contactus', function(req, res){
 });
 
 
-//------------------
-//CART
-//-----------------
-// add to cart base on id
- app.get('/createcart', function(req, res) {
-let sql = 'CREATE TABLE cart (CartId int NOT NULL AUTO_INCREMENT PRIMARY KEY, UserId int, CartDate datetime, CartartStatus varchar(255), cartTotal int(255), FOREIGN KEY (UserId) REFERENCES users(UserId));'
-let query = db.query(sql, (err, res) => {
-if (err) throw err;
-});
-res.send("table created");
+
+app.get('/admincontact', function(req, res){
+ res.render("admincontact", {contacts:contacts}
+ );
+ console.log("contact us inbox");
 });
 
 
-app.get('/createorders', function(req, res) {
-    let sql = 'CREATE TABLE orders (OrderId int NOT NULL AUTO_INCREMENT PRIMARY KEY, OrderRef varchar(255), OrderDate datetime, OrderStatus varchar(255), OrderTotal int(255), UserId int (255),FOREIGN KEY (UserId) REFERENCES users(UserId));'
-    let query = db.query(sql, (err, res) => {
-        if (err) throw err;
-    });
-});
-
-
-app.get('/createordersitems', function(req, res) {
-    let sql = 'CREATE TABLE orderitems (OrderitemsId int NOT NULL AUTO_INCREMENT PRIMARY KEY, ProductId int, OrderId int (255), Qty int, Price int,  FOREIGN KEY (OrderId) REFERENCES orders(OrderId),FOREIGN KEY (ProductId) REFERENCES product(ProductId));'
-    let query = db.query(sql, (err, res) => {
-        if (err) throw err;
-    });
-});
-
-//join product table and order
-app.get('/join', function(req,res){
-let sql = "SELECT ProductId FROM orderitems INNER JOIN spec ON products.Id = spec.Id UNION ALL SELECT * FROM products RIGHT JOIN spec ON products.id = spec.id WHERE products.id IS NULL;";
- let query = db.query(sql,(err,res)=>{
- if (err) throw err;
- console.log(res);
-
-});
-  res.send("join")
-});
-
-app.get('/join', function(req,res){
-let sql = "SELECT * FROM products LEFT JOIN spec ON products.Id = spec.Id UNION ALL SELECT * FROM products RIGHT JOIN spec ON products.id = spec.id WHERE products.id IS NULL;";
- let query = db.query(sql,(err,res)=>{
- if (err) throw err;
- console.log(res);
-
-});
-  res.send("join")
-});
-
-
-
-app.get('/editcart/:id', function(req, res) {
- let sql = 'SELECT * FROM cart WHERE cartId = "' + req.params.id + '"; '
- let query = db.query(sql, (err, res1) => {
-  if (err) 
-  throw (err);
-  res.render('editcart', {root: VIEWS,res1});
-  });
-   console.log("Edit Cary!");
-});
-
-app.post('/editcart/:id', function(req, res) {
-  let sql = 'UPDATE cart SET CartDate = UserId = "' + req.body.newuserId + '", "' + req.body.newCartDate + '" , CartStatus = "' + req.body.newCartStatus + '" , CartTotal = "' + req.body.newCartTotal + '" WHERE CartId = "'+req.params.id+'" ;'
-  let query = db.query(sql, (err, res1) => {
-    if (err) throw (err);
-    console.log(res1);
-  });
-  res.redirect("/cart/" + req.params.id);
-});
-
-
-
-app.get('/deletefromcart/:id', function(req, res) {
-  let sql = 'DELETE FROM cart WHERE cartId = "' + req.params.id + '"; '
-  let query = db.query(sql, (err, res1) => {
-     if (err) throw (err);
-     res.redirect('/index');
-  });
-     console.log("Delete from Cart!");
-});
-
-
-//////////
-////////////
-////////
-
-app.get('/checkout', (req, res) => {
-    if(!req.session.cart) {
-        let cart = new Cart(req.session.cart ? req.session.cart : {});
-        req.session.cart = cart;
-        return res.render('checkout', ({page: 'checkout', products: null}));
-    }
-    let cart = new Cart(req.session.cart);
-    res.render('checkout', {page: 'checkout', products: cart.generateArray(), totalPrice: cart.totalPrice});
-});
-
-app.get("/addtocart/:id", (req, res) => {
-    if(!req.session.cart) {
-        let cart = new Cart(req.session.cart ? req.session.cart : {});
-        req.session.cart = cart;
-        return res.render('checkout', ({page: 'checkout'}));
-    } else {
-        let cart = new Cart(req.session.cart ? req.session.cart : {});
-    }
-    let ProductId = req.params.id;
-    product.findById(ProductId, (err, product) => {
-        if(err)console.error(err);
-        cart.add(product, product.id);
-        req.session.cart = cart;
-        res.redirect('/products');
-    });
-});
-
-//add product to the cart session
-app.get('/addtocart/:id', function(req, res, next) {
-    let productId = req.params.id;
-    let cart = new Cart(req.session.cart ? req.session.cart : {}, req.body.height, req.body.length, req.body.width, req.body.weight);
-    product.findById(ProductId, function(err, product) {
-        if (err) {
-            return res.redirect('/');
-        }
-        if ((!req.session.cart) || (req.session.cart && (Object.keys(req.session.cart.items).length == 0))){
-            cart.add(product, product.id);
-            req.session.cart = cart;
-        }
-        res.redirect('/shopping-cart');
-    });
-});
-
-
-
-//remove from cart session
-app.get("/removefromcart/:id", (req, res) => {
-    let ProductId = req.params.id;
-    let cart = new Cart(req.session.cart ? req.session.cart : {});
-
-    cart.reduceByOne(ProductId);
-    req.session.cart = cart;
-    res.redirect('/products');
-});
-
-app.get("/removefromcart/:id", (req, res) => {
-    let ProductId = req.params.id;
-    let cart = new Cart(req.session.cart ? req.session.cart : {});
-
-    cart.removeItem(ProductId);
-    req.session.cart = cart;
-    res.redirect('/products');
-});
-
-
-///////
-///////
-
-  
-// add to cart base on id
-app.get('/addtocart/:id', function (req, res, next) {
-  let cart = new Cart(req.session.cart ? req.session.cart : {});
-  let parametr = req.params.id; 
-  let productData =[]; 
-  productData = parametr.split("*"); 
-  let price = parseFloat(productData[1]); 
-  let id = parseFloat(productData[0]); 
-  cart.add(productData[2], price, id);
-  req.session.cart = cart;
-  let sql = 'UPDATE product SET Qty =  quantity-1 WHERE ProductId = "' + id +'" AND Quantity>0;'
-    let query = db.query(sql, (err, res) => {
-      if (err) throw err;
-      console.log(res);
-  })
-  res.redirect('/products');
-});
-
-// render cart
-app.get('/cart', function(req, res, next) {
-  if (!req.session.cart) {
-    return res.render("cart", { product: null });
-  }
-  let cart = new Cart(req.session.cart ? req.session.cart : {});
-  res.render("cart", {
-    products: cart.getItems(),
-    totalPrice: cart.totalPrice
-  });
-});
-
-// remove from card
-app.get('/removefromcart/:id', function(req, res, next) {
-  let cart = new Cart(req.session.cart);
-  let parametr = req.params.id; 
-  let productData =[];   
-  productData = parametr.split("*"); 
-  let quantity = parseFloat(productData[1]); 
-  let id = parseFloat(productData[0]); 
-  cart.remove(id);
-  req.session.cart = cart;
-  let sql = 'UPDATE product SET Qty =  quantity + "' + quantity +'" WHERE ProductId = "' + id +'";'
-    let query = db.query(sql, (err, res) => {
-      if (err) throw err;
-      console.log(res);
-  })
-  res.redirect('/cart');
-});
-
-app.get('/product', function (req, res) {
-  let cart = new Cart(req.session.cart ? req.session.cart : {});
-  req.session.cart = cart;
-  res.render('index', { root: VIEWS });
-  console.log("product!");
-});
-
-
-//stripe payment
-app.get("payment", (req, res) =>
-  res.render("payment", {keyPublishable}));
-
-app.post("/complete", (req, res) => {
-  let amount = 500;
-
-  stripe.customers.create({
-     email: req.body.stripeEmail,
-    source: req.body.stripeToken
-  })
-  .then(customer =>
-    stripe.charges.create({
-      amount,
-      description: "payment",
-         currency: "eur",
-         customer: customer.id
-    }))
-  .then(charge => res.render("payment"));
-});
-
-
-
-
-
-var my_amount = {amount: {my_amount}, currency: "EUR"};
-
-app.get("payment", (req, res) =>
-  res.render("payment", {keyPublishable, my_amount}));
-
-app.post("/charge", (req, res) => {
-  let amount = my_amount.amount * 100;
-
-  stripe.customers.create({
-     email: req.body.stripeEmail,
-    source: req.body.stripeToken
-  })
-  .then(customer =>
-    stripe.charges.create({
-      amount,
-      description: "charge",
-         currency: my_amount.currency,
-         customer: customer.id
-    }))
-  .then(charge => res.render("charge", {my_amount}));
-});
-
-
-////////
-
-
-///////////
-///////////
 
 ////////////////
 //BLOG
@@ -1410,6 +1330,454 @@ app.post("/charge", (req, res) => {
   res.redirect("/blog");
  
  });
+
+
+
+
+//------------------
+//CART
+//-----------------
+// add to cart base on id
+ app.get('/createcart', function(req, res) {
+let sql = 'CREATE TABLE cart (CartId int NOT NULL AUTO_INCREMENT PRIMARY KEY, UserId int, CartDate datetime, CartartStatus varchar(255), cartTotal int(255), FOREIGN KEY (UserId) REFERENCES users(UserId));'
+let query = db.query(sql, (err, res) => {
+if (err) throw err;
+});
+res.send("table created");
+});
+
+
+app.get('/createorders', function(req, res) {
+    let sql = 'CREATE TABLE orders (OrderId int NOT NULL AUTO_INCREMENT PRIMARY KEY, OrderRef varchar(255), OrderDate datetime, OrderStatus varchar(255), OrderTotal int(255), UserId int (255),FOREIGN KEY (UserId) REFERENCES users(UserId));'
+    let query = db.query(sql, (err, res) => {
+        if (err) throw err;
+    });
+});
+
+
+app.get('/createordersitems', function(req, res) {
+    let sql = 'CREATE TABLE orderitems (OrderitemsId int NOT NULL AUTO_INCREMENT PRIMARY KEY, ProductId int, OrderId int (255), Qty int, Price int,  FOREIGN KEY (OrderId) REFERENCES orders(OrderId),FOREIGN KEY (ProductId) REFERENCES product(ProductId));'
+    let query = db.query(sql, (err, res) => {
+        if (err) throw err;
+    });
+});
+
+//join product table and order
+app.get('/join', function(req,res){
+let sql = "SELECT ProductId FROM orderitems INNER JOIN spec ON products.Id = spec.Id UNION ALL SELECT * FROM products RIGHT JOIN spec ON products.id = spec.id WHERE products.id IS NULL;";
+ let query = db.query(sql,(err,res)=>{
+ if (err) throw err;
+ console.log(res);
+
+});
+  res.send("join")
+});
+
+app.get('/join', function(req,res){
+let sql = "SELECT * FROM products LEFT JOIN spec ON products.Id = spec.Id UNION ALL SELECT * FROM products RIGHT JOIN spec ON products.id = spec.id WHERE products.id IS NULL;";
+ let query = db.query(sql,(err,res)=>{
+ if (err) throw err;
+ console.log(res);
+
+});
+  res.send("join");
+});
+
+
+
+
+
+app.get('/editcart/:id', function(req, res) {
+ let sql = 'SELECT * FROM cart WHERE cartId = "' + req.params.id + '"; '
+ let query = db.query(sql, (err, res1) => {
+  if (err) 
+  throw (err);
+  res.render('editcart', {root: VIEWS,res1});
+  });
+   console.log("Edit Cary!");
+});
+
+app.post('/editcart/:id', function(req, res) {
+  let sql = 'UPDATE cart SET CartDate = UserId = "' + req.body.newuserId + '", "' + req.body.newCartDate + '" , CartStatus = "' + req.body.newCartStatus + '" , CartTotal = "' + req.body.newCartTotal + '" WHERE CartId = "'+req.params.id+'" ;'
+  let query = db.query(sql, (err, res1) => {
+    if (err) throw (err);
+    console.log(res1);
+  });
+  res.redirect("/cart/" + req.params.id);
+});
+
+
+
+app.get('/deletefromcart/:id', function(req, res) {
+  let sql = 'DELETE FROM cart WHERE cartId = "' + req.params.id + '"; '
+  let query = db.query(sql, (err, res1) => {
+     if (err) throw (err);
+     res.redirect('/index');
+  });
+     console.log("Delete from Cart!");
+});
+
+
+
+///////////
+//add to cart//
+//////////
+app.get('/addtocart', function (req, res) {
+
+	if (req.session.cart == "active") {
+	var productname=req.param("productname");
+	var productid=req.param("ProductId");
+	var price=req.param("price");
+	var quantity=req.param("Qty");
+	var total=quantity*price;
+	console.log('info', "User with UserId: "+req.session.UserId+" adding product to cart");
+	console.log(quantity);
+	let sql = "Insert into cart (ProductId, producname, price, quantityincart, UserId, cartTotal) values ('"+ProductId+"','"+productname+"','"+price+"','"+quantity+"','"+req.session.UserId+"','"+cartTotal+"')";
+	let query = db.query(sql, (err, res1) => {
+		if(err){
+			console.log('error',"Query: " +query);
+			console.log("In error");
+			throw err;
+		}
+		else{
+			console.log("product added");
+			res.render('cart', {root: VIEWS, res1});;
+		}
+			    },query
+			    );
+	 
+	}});
+
+
+
+app.get('/removeitem/:id', function (req, res) {
+	var ProductId = req.param("ProductId");
+	var cart_id = req.param("CartId");
+	console.log(ProductId);
+	console.log('info', "User with UserId: "+req.session.UserId+" removing products from cart");
+	let sql = "DELETE from cart WHERE ProductId='"+ProductId+"' and CartId='"+CartId+"' and UserId='"+req.session.UserId+"'";
+	let query = db.query(sql, (err, res) => {
+		if(err){
+			console.log('error',"Query: " +query);
+			console.log("In error");
+			throw err;
+		}
+		else{
+			console.log("Item deleted successfully");
+			//console.log(results.length);
+			res.render("cart");
+		}
+			    },query);
+	
+});
+
+//////
+app.get('/getcart', function (req, res) {
+	let sql = "select product.Qty, cart.CartId, cart.ProductId, cart.quantityincart, cart.UserId, cart.cartTotal from products join cart where product.ProductId = cart.ProductId and cart.UserId='"+req.session.UserId+"'";
+	
+	let query = db.query(sql, (err, res) => {
+		if(err){
+			console.log('error',"Query: " +query);
+			console.log("In error");
+			throw err;
+		}
+		else{
+			console.log("In getcart node");
+			res.send("cart");
+		}
+			    },query);
+});
+
+
+
+
+app.get('/checkout', function (req, res) {
+	let getcartitems = req.param("getcartitems");
+	
+	for(i=0;i<getcartitems.length;i++){
+		let sql="UPDATE cart SET quantityincart='"+getcartitems[i].quantityincart+"', cartTotal='"+getcartitems[i].cartTotal+"' where Product='"+getcartitems[i].ProductId+"' and CartId='"+getcartitems[i].CartId+"'";
+	//var query = "Update cart set quantityincart='"+quantityincart+"' where cart_id='"+cart_id+"' and product_id='"+product_id+"'";
+ let query = db.query(sql, (err, res) => {	
+		if(err){
+			console.log("In error");
+			throw err;
+		}
+		else{
+		console.log("Quantity updated successfully");
+			//console.log(results.length);
+			//res.render("cart");
+		}
+			    },query);}
+	res.render("payment");
+});
+
+exports.payment=function(req,res){
+	res.render("payment");
+}
+
+
+
+app.get('/cart', function (req, res) {
+
+	console.log('info', "User with UserId: "+req.session.UserId+" checking their cart");
+	res.render("cart");
+});
+
+
+app.get('/ended', function (req, res) {
+	let sql = "Select * from cart where UserId='"+req.session.UserId+"'";
+	 		if(err){
+			console.log("In error");
+			throw err;
+		}
+		else {
+						console.log(res[i]);
+						console.log("History stored");
+						let sql  = "Update product set quantity=quantity-'"+res[i].quantityincart+"' where ProductId='"+res[i].ProductId+"'";
+						let query = db.query(sql, (err, res3) => {	
+							if(err){
+								console.log('error',"Query: " +updateproduct);
+								console.log("In error");
+								throw err;
+							}
+							else {
+								console.log("quantity updated in cart table");
+									let sql = "delete from cart where UserId='"+req.session.UserId+"' and product_id='"+res[i].product_id+"'";
+									 let query = db.query(sql, (err, res2) => {	
+										if(err){
+											console.log('error',"Query: " +emptycart);
+											console.log("In error");
+											throw err;
+										}
+										else {
+												console.log("transaction done!");
+												console.log('info', "User with UserId: "+req.session.UserId+" has completed their transaction");
+												res.render('homepage');
+											        }
+
+											    },emptycart);
+								 }
+
+								    },updateproduct);
+		}
+});
+
+///////////
+//add to cart//
+//////////
+app.get('/addtocart', function (req, res) {
+
+	if (req.session.cart == "active") {
+	var productname=req.param("productname");
+	var productid=req.param("ProductId");
+	var price=req.param("price");
+	var quantity=req.param("Qty");
+	var total=quantity*price;
+	consoler.log('info', "User with UserId: "+req.session.UserId+" adding product to cart");
+	console.log(quantity);
+	let sql = "Insert into cart (ProductId, producname, price, quantityincart, UserId, cartTotal) values ('"+ProductId+"','"+productname+"','"+price+"','"+quantity+"','"+req.session.UserId+"','"+cartTotal+"')";
+	let query = db.query(sql, (err, res1) => {
+		if(err){
+			console.log('error',"Query: " +query);
+			console.log("In error");
+			throw err;
+		}
+		else{
+			console.log("product added");
+			console.log(results);
+		}
+			    },query
+			    );
+	 
+	}});
+
+
+
+app.get('/removeitem/:id', function (req, res) {
+	var ProductId = req.param("ProductId");
+	var cart_id = req.param("CartId");
+	console.log(ProductId);
+	logger.log('info', "User with UserId: "+req.session.UserId+" removing products from cart");
+	let sql = "DELETE from cart WHERE ProductId='"+ProductId+"' and CartId='"+CartId+"' and UserId='"+req.session.UserId+"'";
+	let query = db.query(sql, (err, res1) => {
+		if(err){
+			logger.log('error',"Query: " +query);
+			console.log("In error");
+			throw err;
+		}
+		else{
+			console.log("Item deleted successfully");
+			//console.log(results.length);
+			res.render("cart");
+		}
+			    },query);
+	
+});
+
+//////
+app.get('/removeitem/:id', function (req, res) {
+	// find order id
+	var orderId = null;
+	if (req.session.cart == "active") {
+		let sql3 = 'SELECT orderId FROM orders WHERE orderUserId = "' + parseInt(req.user.userId) + '" ORDER BY orderId DESC LIMIT 1;';
+
+		let query3 = db.query(sql3, (err, res2) => {
+			if (err) throw err;
+			console.log("res2:" + res2)
+			orderId = res2[0].orderId;
+			let sql2 = 'DELETE FROM orderitems WHERE orderId ="' + orderId + '" AND itemId = "' + req.params.id + '" LIMIT 1;'
+			console.log("sql2: " + sql2);
+
+			let query2 = db.query(sql2, (err, res3) => {
+				if (err) throw err;
+				fillInCart(req, res);
+
+			});
+
+		});
+	}
+
+});
+//////////
+
+
+
+
+
+
+// function to render the products page
+app.get('/products', function(req, res){
+ let sql = 'SELECT * FROM product;'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+ 
+  res.render('products', {root: VIEWS, res1}); // use the render command so that the response object renders a HTML page
+ });
+ console.log("products!");
+});
+
+
+
+//app.get('/', function (req, res, next) {
+//  res.render('index', 
+//  { 
+///    title: 'NodeJS Shopping Cart',
+//    products: products
+//  }
+//  );
+//});
+
+
+
+//app.get('/products', function(req, res){
+// res.render("products", {products: products}
+ //);
+// console.log("products");
+//});
+//
+// route to render add JSON page
+//app.get('/products', function(req, res){
+//  res.render('/products', {root: VIEWS});
+//  console.log("/products!");
+//});
+
+
+
+
+
+app.get('/add/:id', function(req, res, next) {
+  let ProductId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+  let product = products.filter(function(item) {
+    return item.id == ProductId;
+  });
+  cart.add(product[0], ProductId);
+  req.session.cart = cart;
+  res.redirect('/');
+});
+
+app.get('/cart', function(req, res, next) {
+  if (!req.session.cart) {
+    return res.render('cart', {
+      products: null
+    });
+  }
+  let cart = new Cart(req.session.cart);
+  res.render('cart', {
+    title: 'NodeJS Shopping Cart',
+    products: cart.getItems(),
+    totalPrice: cart.totalPrice
+  });
+});
+
+app.get('/remove/:id', function(req, res, next) {
+  let ProductId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  cart.remove(ProductId);
+  req.session.cart = cart;
+  res.redirect('/cart');
+});
+
+ 
+
+
+//stripe payment
+app.get("payment", (req, res) =>
+  res.render("payment", {keyPublishable}));
+
+app.post("/complete", (req, res) => {
+  let amount = 500;
+
+  stripe.customers.create({
+     email: req.body.stripeEmail,
+    source: req.body.stripeToken
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "payment",
+         currency: "eur",
+         customer: customer.id
+    }))
+  .then(charge => res.render("payment"));
+});
+
+
+
+
+
+var my_amount = {amount: {my_amount}, currency: "EUR"};
+
+app.get("payment", (req, res) =>
+  res.render("payment", {keyPublishable, my_amount}));
+
+app.post("/charge", (req, res) => {
+  let amount = my_amount.amount * 100;
+
+  stripe.customers.create({
+     email: req.body.stripeEmail,
+    source: req.body.stripeToken
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "charge",
+         currency: my_amount.currency,
+         customer: customer.id
+    }))
+  .then(charge => res.render("charge", {my_amount}));
+});
+
+
+////////
+
+
+///////////
+///////////
+
+
 
 
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", 

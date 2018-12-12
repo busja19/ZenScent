@@ -7,18 +7,20 @@ block content
          if session.cart.totalItems
           .cart.page
             ul.list-group
-              each item in products
+              each item in cart
                 li.list-group-item.clearfix
                   .col-xs-5
                     strong #{item.item}
-                  .col-xs-2.text-right #{item.quantity} 
+                     p product #{item.name}
+                  .col-xs-2.text-right #{quantityincart=1} 
                   .col-xs-3.text-right
                     | #{item.price}  EUR
                   .col-xs-2.text-right
-                    a(href='/removefromcart/#{item.id}*#{item.quantity}')
+                    a(href='/removefromcart/#{x.ProductId}*#{x.CartId}')
                      button.button(type='button') Remove
           .text-right
-            strong Total: #{session.cart.totalPrice} EUR
+            strong Total: #{session.cart.cartTotal} EUR
+            a.btn.btn-primary(ng-click='checkout()') Checkout
           hr
           .text-right
           p Pay by Paypal
@@ -36,6 +38,3 @@ block content
               input(type='hidden', name='return', value='https://000f6e09dec140bca863c66689e56772.vfs.cloud9.eu-west-1.amazonaws.com/confirmation')
          else
           h2 Your shopping cart is empty
-
-          a(href='/products') 
-            button.button(type='button') Exit

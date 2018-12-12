@@ -1,6 +1,6 @@
 extends layout
 block content
- .row
+ .rowcreated
    .container
      .item
        h1
@@ -10,9 +10,8 @@ block content
      .row
        // LOCAL INFORMATION
        .item
-         .well
-
-           p.itemp
+         
+           h6.itemp
              strong id
              | : #{user.Id}
              br
@@ -21,7 +20,9 @@ block content
              br
              strong password
              | : #{user.password}
+             hr
              
-           a.button.btn.btn-secondary(href="/editprofile") Edit Profile    
-           br
-           a.button.btn.btn-secondary(href='/logout') Logout
+            a.button.btn.btn-secondary(href="/editprofile") Edit Profile    
+            br
+            a.button.btn.btn-secondary(href='/logout') Logout
+           

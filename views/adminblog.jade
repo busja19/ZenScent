@@ -2,7 +2,10 @@
 extends layout
 block content
  .col-md-8.col-md-offset-4
-   .rowcreate
+   .rowcre
+   
+     a.button.btn.btn-secondary(href="/admin") ADMIN PANEL  
+     hr
      a.button.btn.btn-secondary(href="/addblog") Add new post  
      center   
     .grid-container
@@ -15,5 +18,4 @@ block content
         br
         a.button.btn.btn-secondary(href="/editblog/#{blog.id}") Edit Blog
         a.button.btn.btn-secondary(href="/deleteblog/#{blog.id}") Delete
-     
-  
+        hr

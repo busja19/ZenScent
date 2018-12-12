@@ -2,15 +2,16 @@ extends layout
 block content
     .container
      .row
-      .col-md-6.col-md-offset-3
+      .col-md-10.col-md-offset-5
            each row in res1
               .item 
                 h1.legend.text-center Categories
                 br
-                h3 Id: #{row.Id}
-                h3  #{row.category_name} 
-                p  #{row.category_descr}
+                h6 Id: #{row.Id}
+                h2  #{row.category_name} 
                 img.pimage2(src='../../#{row.category_image}', alt='#{row.category_image}')
+                p  #{row.category_descr}
+
 
                 br
 

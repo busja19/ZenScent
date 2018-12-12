@@ -8,7 +8,7 @@ block content
     #rightPanel.col-md-8.well
       .row
         .col-md-12
-          form(method="post")
+          form(action='/leditprofile', method="post")
             h2
               | Edit your profile.
              hr.colorgraph
@@ -16,7 +16,7 @@ block content
               .col-xs-12.col-sm-6.col-md-6
 
             .form-group
-              input#email.form-control.input-lg(type='text', name='username', placeholder='username', tabindex='4')
+              input#email.form-control.input-lg(type='password', id='current-password', name='currentPassword', placeholder='Password to confirm changes' required=true)
             .row
               .col-xs-12.col-sm-6.col-md-6
                 .form-group
@@ -39,3 +39,19 @@ block content
           // /.modal-content
           // /.modal-dialog
           // /.modal
+
+
+extends info
+
+block details
+    form(id='changePassword', action='/usr/' + customer.Username + '/change-password', method='POST')
+        label(for='current-password') Current Password
+        input(type='password', id='current-password', name='currentPassword', placeholder='Password to confirm changes' required=true)
+        br
+        label(for='new-password') New Password
+        input(type='password', id='new-password', name='newPassword', placeholder='New Password' required=true)
+        br
+        label(for='confirm-password') Confirm New Password
+        input(type='password', id='confirm-password', name='repeatPassword', placeholder='Repeat New Password' required=true)
+        br
+        button.btn.btn-default(type='submit') Change Password

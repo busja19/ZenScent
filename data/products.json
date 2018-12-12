@@ -1,0 +1,47 @@
+[
+  {
+    "ProductId": 1,
+    "productname": "Ultrasonic Mist Diffuserr, Dark Brown",
+    "category_name": "Diffusers",
+    "price": 24,
+    "Qty": 1,
+    "productdescr": "The Mist Can Be Adjusted To Be A Humidifier.\r\nSpace Can Be Saved with Small Volume.\r\nCan Adjust Your Time According To The Yield of Water.\r\nSuper Quiet: Adopted Ultrasonic Technology, This Ultrasonic Diffuser Is Extremely Quiet When Working. It Gives Out Ultra Fine And Smooth Mist Which Can Soften And Moisten Dry And Chapped Skin In Winter. It Also Helps You Breathe Better When Your Are Sleeping with Air Conditioner On.\r\nPremium Quality Materals: This Aromatherapy Diffuser Made of Bpa Free Materials.Ultra-High Grade, Safe, And Eco-Friendly Pp Materials.",
+    "productimage": "diffuser3.png"
+  },
+  {
+    "ProductId": 2,
+    "productname": "Almond Oil",
+    "category_name": "Esential Oils",
+    "price": 6,
+    "Qty": 1,
+    "productdescr": "Sweet Almond Oil is a natural, cold pressed oil with a neutral aroma that provides the perfect base for you to create your own blend of aromatherapy oils to suit your mood. The softening and nourishing effects of sweet almond oil means it can be used alone as a face or body oil. Essential oils need a quality base oil. Sweet almond is the ideal choice, allowing you to add your choice of aromatherapy oils without affecting the final blend. The perfect base for you to create your own blend of aromatherapy oils to suit your mood.",
+    "productimage": "almond.jpeg"
+  },
+    {
+    "ProductId": 3,
+    "productname": "Lavender Oil",
+    "category_name": "Carrier Oils",
+    "price": 6,
+    "Qty": 1,
+    "productdescr": "100% pure Lavender essential oil Sweet and fragrant With harmonising, nourishing & restorative properties By using bioactive 100% organic Lavender Oil produced under steam distillation, we ensure the energetic and qualities found in the original plant are maintained and maximised. This versatile and aromatic oil is renowned for its harmonising, nourishing and restoring properties.",
+    "productimage": "lavender.jpeg"
+  },
+    {
+    "ProductId": 4,
+    "productname": "Essential Oil Diffuser Aroma Humidifier",
+    "category_name": "Diffusers",
+    "price": 26,
+    "Qty": 1,
+    "productdescr": "The Mist Can Be Adjusted To Be A Humidifier.\r\nSpace Can Be Saved with Small Volume.\r\nCan Adjust Your Time According To The Yield of Water.\r\nSuper Quiet: Adopted Ultrasonic Technology, This Ultrasonic Diffuser Is Extremely Quiet When Working. It Gives Out Ultra Fine And Smooth Mist Which Can Soften And Moisten Dry And Chapped Skin In Winter. It Also Helps You Breathe Better When Your Are Sleeping with Air Conditioner On.\r\nPremium Quality Materals: This Aromatherapy Diffuser Made of Bpa Free Materials.Ultra-High Grade, Safe, And Eco-Friendly Pp Materials.",
+    "productimage": "diffuser.jpg"
+  },
+      {
+    "ProductId": 5,
+    "productname": "Cinnamon Essential Oiln",
+    "category_name": "Esential Oils",
+    "price": 5,
+    "Qty": 1,
+    "productdescr": "An oil with a warm, sweet aroma, cinnamon essential oil is a type of essential oil used in aromatherapy. Typically sourced from the bark of the cinnamon tree, cinnamon essential oil is said to offer a variety of health benefits. Cinnamon essential oil contains a number of compounds thought to influence health.",
+    "productimage": "cinnamon2.jpeg"
+  }
+]

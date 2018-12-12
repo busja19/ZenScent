@@ -1,0 +1,27 @@
+[
+
+    {
+        "id": 1,
+        "name": "customer",
+        "email": "dnevedomska29@gmail.com",
+        "comment": "new enquiry"
+    },
+    {
+        "id": 2,
+        "name": "Diana Nevedomska",
+        "email": "dnevedomska29@gmail.com",
+        "comment": "please contact me in relation to your products!"
+    },
+    {
+        "id": 3,
+        "name": "sa",
+        "email": "dnevedomska29@gmail.com",
+        "comment": "asA"
+    },
+    {
+        "id": 4,
+        "name": "sdasd",
+        "email": "dnevedomska29@gmail.com",
+        "comment": "asdasd"
+    }
+]

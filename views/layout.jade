@@ -113,9 +113,15 @@ html(lang='en')
                   | You can unsubscribe at any time.
                 section
                   .input-group
-                    input.form-control(type='email', placeholder='Email address')
-                    span.input-group-btn
+                   form.searchform(action='/subscribe', method='POST')
+                     input.form-control(type='text', name='email', placeholder='Email address')
+                     span.input-group-btn
                       button.btn.btn-secondary.my-2.my-sm-0(type='submit') Sign me up
+                      
+
+                      
+                      
+                      
       section.company
         .container
           .row

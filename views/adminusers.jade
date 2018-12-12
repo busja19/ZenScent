@@ -12,26 +12,20 @@ block content
     section#products 
      a.button.btn.btn-secondary(href="/admin") ADMIN PANEL  
      hr
-     a.button.btn.btn-secondary(href="/createproduct") Create New Product
-     a.button.btn.btn-secondary(href="/create") Create New Category
+
      .content-section-a
 
          .prod-container
            each row in res1
               .item 
-                p.product1 Product Id: #{row.ProductId}         
-                h1.product #{row.productname}
-                h4.itemp Category: #{row.category_name}
-                img.pimage2(src="#{row.productimage}", alt="#{row.productimage}")
-                h2.price Price: &euro;#{row.price}
-                p.itemp Description: #{row.productdescr}
+                p.product1 User Id: #{row.UserId}         
+                h4.itemp Username: #{row.username}
+                p.itemp Password: #{row.password}
                 br
                 br
                
 
-               a.button.btn.btn-secondary(href="/product/#{row.ProductId}") View Product
-               a.button.btn.btn-secondary(href="/editproduct/#{row.ProductId}") Edit Product
-               a.button.btn.btn-secondary(href="/deleteproduct/#{row.ProductId}") Delete Product
+               a.button.btn.btn-secondary(href="/deleteuser/#{row.UserId}") Delete User
               br
               shr
               

@@ -1,0 +1,18 @@
+extends layout
+block content
+   .rowcreated
+     a.button.btn.btn-secondary(href="/admin") ADMIN PANEL 
+     center
+    
+     h2 Customer Enquiries
+      .col-md-8.col-md-offset-4
+        legend.text-center 
+         each contact in contacts
+          form.form-horizontal
+          fieldset
+            .form-group
+               br
+               h5 Name :   #{contact.name}
+               h5.itemp Email :   #{contact.email}
+               h5.itemp Message :   #{contact.comment}
+               hr
