@@ -296,7 +296,7 @@ app.get('/deletecategory/:id', function(req, res){
  let query = db.query(sql, (err, res1) =>{
   if(err)
   throw(err);
-  res.redirect('/admin'); 
+  res.redirect('/admincategories'); 
  });
 });
 
@@ -431,7 +431,7 @@ app.post('/createproduct', function(req, res){
   console.log("New Product" + name)
  });
   
-res.render('product', {root: VIEWS});
+res.render('admin', {root: VIEWS});
 });
 
 
@@ -483,7 +483,7 @@ app.get('/deleteproduct/:id', function(req, res){
  let query = db.query(sql, (err, res1) =>{
   if(err)
   throw(err);
-  res.redirect('/products'); 
+  res.redirect('/adminproducts'); 
  });
 });
 
@@ -637,6 +637,28 @@ app.get('/user', function(req,res){
  });
 });
 
+
+ // function to delete database
+app.get('/deleteuser/:id', function(req, res){
+ let sql = 'DELETE FROM users WHERE UserId = "'+req.params.id+'";'
+ let query = db.query(sql, (err, res1) =>{
+  if(err)
+  throw(err);
+  res.redirect('/adminuser'); 
+ });
+});
+
+
+// admin user
+app.get('/adminuser', function(req,res){
+ let sql = 'INSERT INTO users (UserId, username, password, admin) VALUES (9, "dianaadmin", "pass123", 1)';
+ let query = db.query(sql,(err,res)=>{
+  if (err) throw err;
+  console.log(res);
+ });
+});
+
+
 //-------------------
 // this is my Admin Table
 //------------------------
@@ -666,16 +688,6 @@ app.get('/adminusers', function(req, res){
 
 
 
-// this is my User Table
-app.get('/adminlog', function(req,res){
- let sql = 'INSERT INTO admin (name, password) VALUES ("dianaadmin", "$2a$10$qYfVrl7zbOIKcKJQtvQG8.jgDDI5XJHSjJan4qSoKdNuNht8GY7my")';
- let query = db.query(sql,(err,res)=>{
-  if (err) throw err;
-  console.log(res);
- });
-});
-
-
 //app.get('/admin', isLoggedIn, isAdmin function(req, res){
 //    res.send('Admin panel!');
 //});
@@ -694,7 +706,7 @@ app.get('/adminlog', function(req,res){
 
 
 //passport authentication for admin
-app.get('/admin', isLoggedIn,function(req,res){
+app.get('/admin', isLoggedIn, isAdmin, function(req,res){
     res.render('admin');
     console.log("admin dashboard");
 });
@@ -769,20 +781,20 @@ app.get('/adminlogin', function(req, res) {
 //-----------------------------
 //--admin dashboard functions
 //------------------------------
-app.get('/adminblog', function(req, res){
+app.get('/adminblog', isLoggedIn, isAdmin, function(req, res){
   res.render('adminblog', {blogs:blogs});
    console.log('Admin blogs management');
 });  
 
 
-app.get('/adminreviews', function(req, res){
+app.get('/adminreviews',isLoggedIn, isAdmin, function(req, res){
   res.render('adminreviews', {reviews:reviews});
    console.log('Admin reviews management');
 });  
 
 
 
-app.get('/adminproducts', function(req, res){
+app.get('/adminproducts',isLoggedIn, isAdmin, function(req, res){
  let sql = 'SELECT * FROM product;'
  let query = db.query(sql, (err, res1) =>{
   if(err)
@@ -795,7 +807,7 @@ app.get('/adminproducts', function(req, res){
 
 
 
-app.get('/admincategories', function(req, res){
+app.get('/admincategories',isLoggedIn, isAdmin, function(req, res){
  let sql2 = 'SELECT * FROM category;'
  let query = db.query(sql2, (err, res1) =>{
   if(err)
@@ -807,7 +819,7 @@ app.get('/admincategories', function(req, res){
 });  
 
 
-app.get('/adminproducts', function(req, res){
+app.get('/adminproducts', isLoggedIn, isAdmin, function(req, res){
  let sql = 'SELECT * FROM orders;'
  let query = db.query(sql, (err, res1) =>{
   if(err)
@@ -840,10 +852,14 @@ app.get('/login', function(req, res) {
             successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
+
 		}),
         function(req, res) {
             console.log("hello");
-
+            
+                if (req.user.isAdmin === true) {
+      res.redirect('/admin');
+    }
             if (req.body.remember) {
               req.session.cookie.maxAge = 1000 * 60 * 3;
             } else {
@@ -851,8 +867,6 @@ app.get('/login', function(req, res) {
             }
         res.redirect('/');
     });
-
-
 
 
 	// =====================================
@@ -869,6 +883,7 @@ app.get('/login', function(req, res) {
 		successRedirect : '/profile', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
+		
 	}));
 
 	
@@ -1032,8 +1047,8 @@ function isAdmin(req, res, next) {
                 }
 
                 // if the user is found but the password is wrong
-                if (!bcrypt.compareSync(password, rows[0].password))
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+               // if (!bcrypt.compareSync(password, rows[0].password))
+                 //   return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
                 // all is well, return successful user
                 return done(null, rows[0]);
@@ -1090,7 +1105,7 @@ app.get('/addreview', function(req, res){
 // post request to add JSON REVIEW
 
 //add reviews
-app.post('/addreview', function(req, res){
+app.post('/addreview', isLoggedIn, function(req, res){
 	var count = Object.keys(reviews).length; 
 	console.log(count);
 	
@@ -1216,7 +1231,7 @@ app.post('/contactus', function(req, res){
 
 
 
-app.get('/admincontact', function(req, res){
+app.get('/admincontact', isLoggedIn, isAdmin, function(req, res){
  res.render("admincontact", {contacts:contacts}
  );
  console.log("contact us inbox");

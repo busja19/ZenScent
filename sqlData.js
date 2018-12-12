@@ -1,5 +1,5 @@
 -- MySqlBackup.NET 2.0.9.2
--- Dump Time: 2018-12-12 06:35:32
+-- Dump Time: 2018-12-12 15:29:36
 -- --------------------------------------
 -- Server version 5.7.19-log MySQL Community Server (GPL)
 
@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `CartDate` datetime DEFAULT NULL,
   `CartartStatus` varchar(255) DEFAULT NULL,
   `cartTotal` int(255) DEFAULT NULL,
+  `quantityincart` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`CartId`),
   KEY `UserId` (`UserId`),
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`UserId`)
@@ -181,16 +182,19 @@ INSERT INTO `product`(`ProductId`,`productname`,`category_name`,`price`,`Qty`,`p
 
 DROP TABLE IF EXISTS `subscribers`;
 CREATE TABLE IF NOT EXISTS `subscribers` (
-  `Email` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `SubscriberId` int(11) NOT NULL AUTO_INCREMENT,
+  `Email` varchar(50) NOT NULL,
+  PRIMARY KEY (`SubscriberId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table subscribers
 -- 
 
 /*!40000 ALTER TABLE `subscribers` DISABLE KEYS */;
-INSERT INTO `subscribers`(`Email`) VALUES
-('diana_nevedomska@yahoo.com');
+INSERT INTO `subscribers`(`SubscriberId`,`Email`) VALUES
+(1,'dnevedomska29@gmail.com'),
+(2,'diana_nevedomska@yahoo.com');
 /*!40000 ALTER TABLE `subscribers` ENABLE KEYS */;
 
 -- 
@@ -215,7 +219,8 @@ INSERT INTO `users`(`UserId`,`username`,`password`,`admin`) VALUES
 (1,'admin','pass123',0),
 (2,'Diana','$2a$10$AvJiAL1BlQQVd2TZ7aH3b.Npuo.ldMcbUFAy3Lfu4OUt82f2DP3Q2',0),
 (3,'anna','$2a$10$wOvNScnCO7lcXxFUouMDqeXxOn/d9TrbKLYCicZfkwI0E/2ElZNui',0),
-(7,'test123','$2a$10$qYfVrl7zbOIKcKJQtvQG8.jgDDI5XJHSjJan4qSoKdNuNht8GY7my',0);
+(7,'test123','$2a$10$qYfVrl7zbOIKcKJQtvQG8.jgDDI5XJHSjJan4qSoKdNuNht8GY7my',0),
+(9,'dianaadmin','pass123',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- 
@@ -251,5 +256,5 @@ CREATE TABLE IF NOT EXISTS `wishlist` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
--- Dump completed on 2018-12-12 06:35:33
--- Total time: 0:0:0:0:843 (d:h:m:s:ms)
+-- Dump completed on 2018-12-12 15:29:36
+-- Total time: 0:0:0:0:468 (d:h:m:s:ms)
